@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanzoy.yuekewei.mapper.CoachMapper">
+    <select id="getCoach" resultType="com.hanzoy.yuekewei.pojo.po.CoachInfo">
+        select
+               c.id, c.name, c.remark, c.content, p1.url AS avatarUrl, p2.url AS backgroundUrl
+        from
+             coach c
+        left join
+            picture p1
+                on p1.id = c.avatar_url
+        left join
+            picture p2
+                on p2.id = c.background_url
+    </select>
+</mapper>
