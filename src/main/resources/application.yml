@@ -2,7 +2,8 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://192.168.115.89:3307/yue_ke_wei?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://49.232.223.89:50013/yue_ke_wei?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#    url: jdbc:mysql://192.168.115.89:3307/yue_ke_wei?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,5 +16,5 @@ token:
   time: 60*60*24*7
 
 wechat:
-  appid: wx192b37f3cf001415
-  secret: 507cf12c3ac01e64a038b248df28fe32
+  appid: wx1e6fdf0c98dc8a82
+  secret: 1e2b97553b76963c18e45156b1cee4bb

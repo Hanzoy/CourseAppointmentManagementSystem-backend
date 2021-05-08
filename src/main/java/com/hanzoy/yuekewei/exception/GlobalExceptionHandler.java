@@ -1,6 +1,8 @@
 package com.hanzoy.yuekewei.exception;
 
+import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
+import com.hanzoy.yuekewei.pojo.dto.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -41,6 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public CommonResult<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
         return CommonResult.paramError("请求参数解析异常");
+    }
+
+    @ExceptionHandler(WechatServerErrorException.class)
+    public CommonResult<Object> handleWechatServerErrorException(WechatServerErrorException e){
+        return CommonResult.fail(ResultEnum.WECHAT_SERVER_ERROR.getCode(), e.getMessage());
     }
 
 //    @ExceptionHandler(NumberFormatException.class)

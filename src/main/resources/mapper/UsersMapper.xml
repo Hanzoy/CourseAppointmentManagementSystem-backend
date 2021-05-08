@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanzoy.yuekewei.mapper.UsersMapper">
+    <select id="getUserByOpenid" resultType="com.hanzoy.yuekewei.pojo.po.entity.Users">
+        select
+               openid, name, nick_name AS nickName, avatar_url AS avatarUrl
+        from
+             users
+        where
+              openid = #{openid}
+    </select>
+
+    <insert id="insertUser">
+        insert into
+            users(openid, name, nick_name, avatar_url, phone)
+        values
+               (#{openid}, #{name}, #{nickName}, #{avatarUrl}, #{phone})
+    </insert>
+
+</mapper>

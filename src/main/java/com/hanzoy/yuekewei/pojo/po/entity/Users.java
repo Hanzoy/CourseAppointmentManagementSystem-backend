@@ -26,4 +26,9 @@ public class Users {
      * 用户微信头像
      */
     private String avatarUrl;
+
+    /**
+     * 用户电话
+     */
+    private String phone;
 }
