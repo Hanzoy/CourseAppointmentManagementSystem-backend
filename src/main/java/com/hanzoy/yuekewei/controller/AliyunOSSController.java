@@ -26,11 +26,6 @@ public class AliyunOSSController {
     @Resource
     PictureMapper pictureMapper;
 
-    @RequestMapping("/upload")
-    public String upload() {
-        return "upload.html";
-    }
-
     @RequestMapping("/uploadFile")
     public String upLoad(@RequestParam("file")MultipartFile file) {
         String fileName = file.getOriginalFilename();

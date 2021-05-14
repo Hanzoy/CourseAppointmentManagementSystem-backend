@@ -4,6 +4,7 @@ import com.hanzoy.utils.ClassCopyUtils.ClassCopyUtils;
 import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.mapper.UsersMapper;
+import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
 import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
 import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
@@ -120,5 +121,10 @@ public class UserServiceImpl implements UserService {
             throw new WechatServerErrorException(authorizationResult != null ? authorizationResult.getErrmsg() : null);
         }
         return result;
+    }
+
+    @Override
+    public UserTokenInfo getUserTokenInfo(String token) {
+        return jwtUtils.getBean(token, UserTokenInfo.class);
     }
 }

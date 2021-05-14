@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanzoy.yuekewei.mapper.CourseMapper">
+    <select id="getCourseByUserOpenid" resultType="com.hanzoy.yuekewei.pojo.po.CourseInfo">
+        select
+               c.id, c.name, p.url AS backgroundUrl, ct.count
+        from
+             course_time ct
+        right join
+                 course c
+                on
+                    c.id = ct.course_id
+        left join
+                 picture p
+                on
+                    c.background_url = p.id
+        where
+              user_id = #{openid}
+    </select>
+
+    <select id="getTimetableByCourseIdAndDate" resultType="com.hanzoy.yuekewei.pojo.po.Timetable">
+        select
+               t.id AS id,
+               c.name AS coachName,
+               p.url AS coachAvatarUrl,
+               t.start_time AS startTime,
+               t.end_time AS endTime,
+               t.toplimit AS toplimit,
+               t.remark AS remark,
+               t.address AS address,
+               (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count
+        from
+             timetable t
+        left join
+                 timetable_coach_merge tcm
+                     on t.id = tcm.timetable_id
+        left join
+                 coach c
+                     on tcm.coach_id = c.id
+        left join
+                 picture p
+                     on c.avatar_url = p.id
+        where
+              course_id = #{courseId}
+          and
+              date = #{date}
+    </select>
+
+    <select id="isReservation" resultType="boolean">
+        select exists(select * from timetable_users_merge where user_id = #{openid} and timetable_id = #{timetableId})
+    </select>
+</mapper>

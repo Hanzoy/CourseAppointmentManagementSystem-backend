@@ -1,12 +1,9 @@
-package com.hanzoy.yuekewei.pojo.po.entity;
+package com.hanzoy.yuekewei.pojo.po;
 
 import lombok.Data;
 
-/**
- * 数据库course表实体类
- */
 @Data
-public class Course {
+public class CourseInfo {
     /**
      * 主键
      */
@@ -20,5 +17,10 @@ public class Course {
     /**
      * 课程背景图片
      */
-    private Integer backgroundUrl;
+    private String backgroundUrl;
+
+    /**
+     * 剩余课时数量
+     */
+    private Integer count;
 }
