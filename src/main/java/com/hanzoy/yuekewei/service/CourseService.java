@@ -1,7 +1,9 @@
 package com.hanzoy.yuekewei.service;
 
+import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
+import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
 
@@ -19,4 +21,11 @@ public interface CourseService {
      * @return 返回包装类
      */
     GetReservationCourseInfoResult getReservationCourseInfo(GetReservationCourseInfoParam param);
+
+    /**
+     * 根据id获取某一课程安排详细信息
+     * @param param 参数
+     * @return 返回包装类
+     */
+    GetCourseInfoResult getCourseInfo(GetCourseInfoParam param);
 }

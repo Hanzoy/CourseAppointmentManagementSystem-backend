@@ -1,14 +1,18 @@
 package com.hanzoy.yuekewei.service.impl;
 
+import com.hanzoy.utils.ClassCopyUtils.ClassCopyUtils;
 import com.hanzoy.yuekewei.mapper.CourseMapper;
 import com.hanzoy.yuekewei.pojo.bo.CourseTimetable;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
+import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.po.CourseInfo;
 import com.hanzoy.yuekewei.pojo.po.Timetable;
+import com.hanzoy.yuekewei.pojo.po.TimetableInfo;
 import com.hanzoy.yuekewei.service.CourseService;
 import com.hanzoy.yuekewei.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +83,26 @@ public class CourseServiceImpl implements CourseService {
             result.getCourseTimetables().add(courseTimetable);
 
         }
+        return result;
+    }
+
+    @Override
+    public GetCourseInfoResult getCourseInfo(GetCourseInfoParam param) {
+        //获取待查的课程id
+        Integer id = param.getId();
+
+        //创建返回对象
+        GetCourseInfoResult result = new GetCourseInfoResult();
+
+        //获取token存储的信息
+        UserTokenInfo tokenInfo = userService.getUserTokenInfo(param.getToken());
+
+        //数据库查询
+        TimetableInfo timetableInfo = courseMapper.getTimetableInfoByTimetableIdAndOpenid(param.getId(), tokenInfo.getOpenid());
+
+        //将查询到到数据写入返回对象中
+        ClassCopyUtils.ClassCopy(result, timetableInfo);
+
         return result;
     }
 }

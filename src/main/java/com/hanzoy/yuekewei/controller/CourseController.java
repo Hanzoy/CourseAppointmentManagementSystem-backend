@@ -1,8 +1,10 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
+import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
+import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
 import com.hanzoy.yuekewei.service.CourseService;
@@ -34,6 +36,13 @@ public class CourseController {
     @PostMapping("/getReservationCourseInfo")
     public CommonResult<GetReservationCourseInfoResult> getReservationCourseInfo(@RequestBody @Validated GetReservationCourseInfoParam param){
         GetReservationCourseInfoResult result = courseService.getReservationCourseInfo(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("根据id查询课程预约信息")
+    @PostMapping("/getCourseInfo")
+    public CommonResult<GetCourseInfoResult> getCourseInfo(@RequestBody @Validated GetCourseInfoParam param){
+        GetCourseInfoResult result = courseService.getCourseInfo(param);
         return CommonResult.success(result);
     }
 }
