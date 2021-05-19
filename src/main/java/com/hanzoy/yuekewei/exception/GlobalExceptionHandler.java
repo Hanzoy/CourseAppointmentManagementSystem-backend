@@ -1,5 +1,6 @@
 package com.hanzoy.yuekewei.exception;
 
+import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
 import com.hanzoy.yuekewei.pojo.dto.ResultEnum;
@@ -45,11 +46,20 @@ public class GlobalExceptionHandler {
         return CommonResult.paramError("请求参数解析异常");
     }
 
+    /**
+     * 微信接口异常拦截
+     * @param e 拦截的异常
+     * @return 返回对象
+     */
     @ExceptionHandler(WechatServerErrorException.class)
     public CommonResult<Object> handleWechatServerErrorException(WechatServerErrorException e){
         return CommonResult.fail(ResultEnum.WECHAT_SERVER_ERROR.getCode(), e.getMessage());
     }
 
+    @ExceptionHandler(TokenErrorException.class)
+    public CommonResult<Object> tokenErrorException(TokenErrorException e){
+        return CommonResult.tokenError(e.getMessage());
+    }
 //    @ExceptionHandler(NumberFormatException.class)
 //    public CommonResult numberFormatException(NumberFormatException e){
 //        return CommonResult.serverError("数字解析异常");

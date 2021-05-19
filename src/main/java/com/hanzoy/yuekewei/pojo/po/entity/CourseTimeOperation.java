@@ -22,7 +22,7 @@ public class CourseTimeOperation {
     /**
      * 课程id
      */
-    private Integer courseId;
+    private Integer timetableId;
 
     /**
      * 操作

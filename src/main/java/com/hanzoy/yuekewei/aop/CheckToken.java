@@ -1,5 +1,6 @@
 package com.hanzoy.yuekewei.aop;
 
+import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
 import com.hanzoy.utils.JWTUtils.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,8 @@ public class CheckToken {
             //获取param中的token字段
             Object param = joinPoint.getArgs()[0];
             tokenField = param.getClass().getDeclaredField("token");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch (Exception ignored){
+
         }
         if(tokenField != null){
             //如果参数中存在token字段，先获取token字段
@@ -49,7 +50,7 @@ public class CheckToken {
             //检验token
             if (!jwtUtils.checkToken(token)) {
                 //如果token未通过检验则，拦截方法执行
-                return CommonResult.tokenError();
+                throw new TokenErrorException("token未通过校验");
             }
         }
         //如果没有token字段或者通过token检验则执行业务方法

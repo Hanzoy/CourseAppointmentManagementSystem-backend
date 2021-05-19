@@ -1,8 +1,10 @@
 package com.hanzoy.yuekewei.service;
 
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
+import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
@@ -36,4 +38,11 @@ public interface UserService {
      * @return 带有token信息的实体类
      */
     UserTokenInfo getUserTokenInfo(String token);
+
+    /**
+     * 检查token
+     * @param param 需要检查的token
+     * @return 返回包装对象
+     */
+    CheckTokenResult checkToken(CheckTokenParam param);
 }

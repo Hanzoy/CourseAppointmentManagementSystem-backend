@@ -4,12 +4,15 @@ import com.hanzoy.yuekewei.pojo.dto.CommonResult;
 import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
+import com.hanzoy.yuekewei.pojo.dto.param.ReservationCourseParam;
 import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
+import com.hanzoy.yuekewei.pojo.dto.result.ReservationCourseResult;
 import com.hanzoy.yuekewei.service.CourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +46,13 @@ public class CourseController {
     @PostMapping("/getCourseInfo")
     public CommonResult<GetCourseInfoResult> getCourseInfo(@RequestBody @Validated GetCourseInfoParam param){
         GetCourseInfoResult result = courseService.getCourseInfo(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("课程预定")
+    @PostMapping("/reservationCourse")
+    public CommonResult<ReservationCourseResult> reservationCourse(@RequestBody @Validated ReservationCourseParam param){
+        ReservationCourseResult result = courseService.reservationCourse(param);
         return CommonResult.success(result);
     }
 }

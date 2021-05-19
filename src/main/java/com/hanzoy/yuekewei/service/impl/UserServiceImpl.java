@@ -5,8 +5,10 @@ import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.mapper.UsersMapper;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
+import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
@@ -126,5 +128,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserTokenInfo getUserTokenInfo(String token) {
         return jwtUtils.getBean(token, UserTokenInfo.class);
+    }
+
+    @Override
+    public CheckTokenResult checkToken(CheckTokenParam param) {
+        return null;
     }
 }

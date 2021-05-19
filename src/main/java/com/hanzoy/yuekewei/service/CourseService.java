@@ -3,9 +3,12 @@ package com.hanzoy.yuekewei.service;
 import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
+import com.hanzoy.yuekewei.pojo.dto.param.ReservationCourseParam;
 import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
+import com.hanzoy.yuekewei.pojo.dto.result.ReservationCourseResult;
+import com.hanzoy.yuekewei.pojo.po.Timetable;
 
 public interface CourseService {
     /**
@@ -28,4 +31,11 @@ public interface CourseService {
      * @return 返回包装类
      */
     GetCourseInfoResult getCourseInfo(GetCourseInfoParam param);
+
+    /**
+     * 预约课程
+     * @param param 参数
+     * @return 返回对象
+     */
+    ReservationCourseResult reservationCourse(ReservationCourseParam param);
 }

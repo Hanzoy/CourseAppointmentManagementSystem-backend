@@ -1,8 +1,10 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
+import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
+import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
 import com.hanzoy.yuekewei.service.UserService;
@@ -31,9 +33,17 @@ public class UserController {
         return CommonResult.success(result);
     }
 
+    @ApiOperation("新用户注册")
     @PostMapping("/register")
     public CommonResult<UserRegisterResult> userRegister(@RequestBody @Validated UserRegisterParam param){
         UserRegisterResult result = userService.userRegister(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("检查token")
+    @PostMapping("/checkToken")
+    public CommonResult<CheckTokenResult> checkToken(@RequestBody @Validated CheckTokenParam param){
+        CheckTokenResult result = userService.checkToken(param);
         return CommonResult.success(result);
     }
 }

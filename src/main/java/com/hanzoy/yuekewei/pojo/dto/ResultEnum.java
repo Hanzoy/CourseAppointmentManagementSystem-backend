@@ -10,8 +10,8 @@ public enum ResultEnum {
     TOKEN_ERROR("A0220", "用户身份验证错误"),
     SERVER_ERROR("B0001", "服务器执行错误"),
     AUTH_ERROR("A0300", "访问权限异常");
-    private String code;
-    private String message;
+    private final String code;
+    private final String message;
 
     ResultEnum(String code, String message) {
         this.code = code;

@@ -44,6 +44,8 @@
               course_id = #{courseId}
           and
               date = #{date}
+        order by
+                 start_time
     </select>
 
     <select id="isReservation" resultType="boolean">
@@ -89,4 +91,87 @@
           and
               ct.user_id = #{openid}
     </select>
+
+    <select id="getUserReservationByOpenidAndDate" resultType="com.hanzoy.yuekewei.pojo.po.UserReservationInfo">
+        select
+               t.id AS id,
+               t.start_time AS startTime,
+               t.end_time AS endTime,
+               t.toplimit - (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count,
+               (select exists(select * from timetable_users_merge where user_id = #{openid} and timetable_id = t.id)) AS isReservation
+        from
+             timetable t
+        left join
+                 timetable_users_merge tum
+                     on t.id = tum.timetable_id
+        where
+              t.date = #{date}
+          and
+              tum.user_id = #{openid}
+    </select>
+
+    <select id="getTimetableDateByTimetableId" resultType="com.hanzoy.yuekewei.pojo.po.TimetableDates">
+        select
+               t.date AS date,
+               t.start_time AS startTime,
+               t.end_time AS endTime
+        from
+            timetable t
+        where
+            t.id = #{timetableId}
+    </select>
+
+    <select id="getCourseTime" resultType="int">
+        select
+               count
+        from
+             course_time
+        where
+              user_id = #{openid}
+          and
+              course_id = #{courseId}
+    </select>
+
+    <update id="updateCourseTime">
+        update
+            course_time
+        set
+            count = #{count}
+        where
+              course_id = #{courseId}
+          and
+              user_id = #{openid}
+    </update>
+
+    <update id="addCourseTime">
+        update
+            course_time
+        set
+            count = (select count from course_time where user_id = #{openid} and course_id = #{courseId}) + 1
+        where
+            course_id = #{courseId}
+          and
+            user_id = #{openid}
+    </update>
+
+    <insert id="recordOperation" useGeneratedKeys="true">
+        insert into
+            course_time_operation(user_id, timetable_id, operation)
+            VALUES (#{openid}, #{timetableId}, #{operation})
+    </insert>
+
+    <insert id="addUserToTimetable" useGeneratedKeys="true">
+        insert into
+            timetable_users_merge(timetable_id, user_id)
+            VALUES (#{timetableId}, #{openid})
+    </insert>
+
+    <delete id="deleteUserToTimetable">
+        delete from
+                    timetable_users_merge
+        where
+              timetable_id = #{timetableId}
+          and
+              user_id = #{openid}
+    </delete>
 </mapper>
