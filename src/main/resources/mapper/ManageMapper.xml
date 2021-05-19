@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanzoy.yuekewei.mapper.ManageMapper">
+    <select id="getAdminByUsernameAndPassword" resultType="com.hanzoy.yuekewei.pojo.po.entity.Admin">
+        select
+               id, username, password, name
+        from
+             admin
+        where
+              username = #{username}
+          and
+              password = #{password}
+    </select>
+
+    <select id="getAllCourseInfo" resultType="com.hanzoy.yuekewei.pojo.po.CourseAndUserInfo">
+        select
+               id, name, background_url
+        from
+             course
+    </select>
+
+    <select id="getUserCourseInfoByCourseId" resultType="com.hanzoy.yuekewei.pojo.po.UserCourseTimeInfo">
+        select
+               u.openid AS openid,
+               u.name AS name,
+               u.nick_name AS nickName,
+               u.avatar_url AS avatarUrl,
+               u.phone AS phone,
+               ct.count AS count
+        from
+             course_time ct
+        left join
+                 users u
+                     on ct.user_id = u.openid
+        where
+              ct.course_id = #{courseId}
+    </select>
+</mapper>

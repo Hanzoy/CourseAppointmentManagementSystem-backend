@@ -2,18 +2,25 @@ package com.hanzoy.yuekewei.pojo.po.entity;
 
 import lombok.Data;
 
-/**
- * 数据库role实体类
- */
 @Data
-public class Role {
+public class Admin {
     /**
      * 主键
      */
     private Integer id;
 
     /**
-     * 名称
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 名字
      */
     private String name;
 }

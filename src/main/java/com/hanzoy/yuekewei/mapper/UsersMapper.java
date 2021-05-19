@@ -7,4 +7,6 @@ public interface UsersMapper {
     Users getUserByOpenid(@Param("openid") String openid);
 
     void insertUser(Users user);
+
+
 }
