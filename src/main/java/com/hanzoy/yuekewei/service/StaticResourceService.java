@@ -1,5 +1,7 @@
 package com.hanzoy.yuekewei.service;
 
+import com.hanzoy.yuekewei.pojo.dto.param.GetAllPictureParam;
+import com.hanzoy.yuekewei.pojo.dto.result.GetAllPictureResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetCoachResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetSwiperResult;
 
@@ -14,5 +16,11 @@ public interface StaticResourceService {
      */
     GetSwiperResult getSwiper();
 
+    /**
+     * 查看所有的图片
+     * @param param 参数
+     * @return 返回对象
+     */
+    GetAllPictureResult getAllPicture(GetAllPictureParam param);
 
 }

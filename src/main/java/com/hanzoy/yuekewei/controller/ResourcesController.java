@@ -1,6 +1,8 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
+import com.hanzoy.yuekewei.pojo.dto.param.GetAllPictureParam;
+import com.hanzoy.yuekewei.pojo.dto.result.GetAllPictureResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetCoachResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetSwiperResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetVenueResult;
@@ -9,8 +11,12 @@ import com.hanzoy.yuekewei.service.StaticResourceService;
 import com.hanzoy.yuekewei.service.VenueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api("微信客户端资源获取")
@@ -45,5 +51,12 @@ public class ResourcesController {
     public CommonResult<GetVenueResult> getVenue(){
         GetVenueResult venue = venueService.getVenue();
         return CommonResult.success(venue);
+    }
+
+    @ApiOperation("查看所有图片")
+    @PostMapping("/getAllPicture")
+    public CommonResult<GetAllPictureResult> getAllPicture(@RequestBody @Validated GetAllPictureParam param){
+        GetAllPictureResult allPicture = staticResourceService.getAllPicture(param);
+        return CommonResult.success(allPicture);
     }
 }

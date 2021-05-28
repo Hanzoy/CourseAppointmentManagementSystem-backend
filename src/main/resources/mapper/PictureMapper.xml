@@ -17,4 +17,11 @@
             picture(url, remark)
             VALUES (#{url}, #{remark})
     </insert>
+
+    <select id="getAllPicture" resultType="com.hanzoy.yuekewei.pojo.po.PictureInfo">
+        select
+               id, url, remark
+        from
+             picture;
+    </select>
 </mapper>

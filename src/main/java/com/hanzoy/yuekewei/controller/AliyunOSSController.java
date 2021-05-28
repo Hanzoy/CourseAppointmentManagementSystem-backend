@@ -27,7 +27,7 @@ public class AliyunOSSController {
     PictureMapper pictureMapper;
 
     @RequestMapping("/uploadFile")
-    public String upLoad(@RequestParam("file")MultipartFile file) {
+    public String upLoad(@RequestParam("file")MultipartFile file, @RequestParam("remark")String remark) {
         String fileName = file.getOriginalFilename();
         System.out.println(fileName);
         String uploadUrl = null;
@@ -47,17 +47,17 @@ public class AliyunOSSController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        pictureMapper.insertPicture(new Picture(null, uploadUrl, null));
+        pictureMapper.insertPicture(new Picture(null, uploadUrl, remark));
         return uploadUrl;
     }
 
-    @RequestMapping("/download")
+//    @RequestMapping("/download")
     public String download(@RequestParam("fileName")String fileName) {
         aliyunOSSUtil.downloadFile(fileName);
         return "downSuccess.html";
     }
 
-    @RequestMapping("/listFile")
+//    @RequestMapping("/listFile")
     public String listFile(Model model) {
         List<Map<String, Object>> list = aliyunOSSUtil.listFile();
         model.addAttribute("list", list);
