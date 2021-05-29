@@ -4,15 +4,19 @@ import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.utils.MD5Utils.MD5Utils;
 import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.mapper.ManageMapper;
+import com.hanzoy.yuekewei.mapper.UsersMapper;
 import com.hanzoy.yuekewei.pojo.bo.AdminTokenInfo;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
+import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
 import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
+import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
 import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
 import com.hanzoy.yuekewei.pojo.po.CourseAndUserInfo;
 import com.hanzoy.yuekewei.pojo.po.UserCourseTimeInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Admin;
+import com.hanzoy.yuekewei.pojo.po.entity.Users;
 import com.hanzoy.yuekewei.service.ManageService;
 import com.hanzoy.yuekewei.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Resource
     ManageMapper manageMapper;
+
+    @Resource
+    UsersMapper usersMapper;
 
     @Autowired
     JWTUtils jwtUtils;
@@ -80,5 +87,25 @@ public class ManageServiceImpl implements ManageService {
     @Override
     public AdminTokenInfo getAdminTokenInfo(String token) {
         return jwtUtils.getBean(token, AdminTokenInfo.class);
+    }
+
+    @Override
+    public GetAllUsersResult getAllUsers(GetAllUsersParam param) {
+        //创建返回对象
+        GetAllUsersResult result = new GetAllUsersResult();
+
+        //获取token内容
+        AdminTokenInfo tokenInfo = getAdminTokenInfo(param.getToken());
+
+        //检查token
+        if(tokenInfo.getId() == null){
+            throw new TokenErrorException("未识别token");
+        }
+
+        ArrayList<Users> users = usersMapper.getAllUsers();
+
+        result.setUsers(users);
+
+        return result;
     }
 }

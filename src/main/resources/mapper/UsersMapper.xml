@@ -17,4 +17,7 @@
                (#{openid}, #{name}, #{nickName}, #{avatarUrl}, #{phone})
     </insert>
 
+    <select id="getAllUsers" resultType="com.hanzoy.yuekewei.pojo.po.entity.Users">
+        select openid, name, nick_name AS nickName, avatar_url AS avatarUrl, phone from users
+    </select>
 </mapper>
