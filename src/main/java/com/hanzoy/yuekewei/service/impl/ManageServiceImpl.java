@@ -7,9 +7,11 @@ import com.hanzoy.yuekewei.mapper.ManageMapper;
 import com.hanzoy.yuekewei.mapper.UsersMapper;
 import com.hanzoy.yuekewei.pojo.bo.AdminTokenInfo;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.ChangeUserInformationParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
 import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
+import com.hanzoy.yuekewei.pojo.dto.result.ChangeUserInformationResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
 import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
@@ -107,5 +109,21 @@ public class ManageServiceImpl implements ManageService {
         result.setUsers(users);
 
         return result;
+    }
+
+    @Override
+    public ChangeUserInformationResult changeUserInformation(ChangeUserInformationParam param) {
+
+        //获取token内容
+        AdminTokenInfo tokenInfo = getAdminTokenInfo(param.getToken());
+
+        //检查token
+        if(tokenInfo.getId() == null){
+            throw new TokenErrorException("未识别token");
+        }
+
+        usersMapper.updateInformation(param.getOpenid(), param.getName(), param.getPhone());
+
+        return null;
     }
 }

@@ -1,9 +1,11 @@
 package com.hanzoy.yuekewei.service;
 
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.ChangeInformationParam;
 import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
 import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
+import com.hanzoy.yuekewei.pojo.dto.result.ChangeInformationResult;
 import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
 import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
@@ -45,4 +47,11 @@ public interface UserService {
      * @return 返回包装对象
      */
     CheckTokenResult checkToken(CheckTokenParam param);
+
+    /**
+     * 修改个人信息
+     * @param param
+     * @return
+     */
+    ChangeInformationResult changeInformation(ChangeInformationParam param);
 }

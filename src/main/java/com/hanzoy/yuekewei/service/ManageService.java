@@ -1,9 +1,11 @@
 package com.hanzoy.yuekewei.service;
 
 import com.hanzoy.yuekewei.pojo.bo.AdminTokenInfo;
+import com.hanzoy.yuekewei.pojo.dto.param.ChangeUserInformationParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
 import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
+import com.hanzoy.yuekewei.pojo.dto.result.ChangeUserInformationResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
 import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
@@ -20,4 +22,6 @@ public interface ManageService {
     AdminTokenInfo getAdminTokenInfo(String token);
 
     GetAllUsersResult getAllUsers(GetAllUsersParam param);
+
+    ChangeUserInformationResult changeUserInformation(ChangeUserInformationParam param);
 }

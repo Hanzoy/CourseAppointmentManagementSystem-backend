@@ -1,9 +1,11 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
+import com.hanzoy.yuekewei.pojo.dto.param.ChangeUserInformationParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
 import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
 import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
+import com.hanzoy.yuekewei.pojo.dto.result.ChangeUserInformationResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
 import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
@@ -43,6 +45,13 @@ public class ManageController {
     @PostMapping("/getAllUsers")
     public CommonResult<GetAllUsersResult> getAllUsers(@RequestBody @Validated GetAllUsersParam param){
         GetAllUsersResult result = manageService.getAllUsers(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("修改用户个人信息")
+    @PostMapping("/changeUserInformation")
+    public CommonResult<ChangeUserInformationResult> changeUserInformation(@RequestBody @Validated ChangeUserInformationParam param){
+        ChangeUserInformationResult result = manageService.changeUserInformation(param);
         return CommonResult.success(result);
     }
 }

@@ -11,4 +11,6 @@ public interface UsersMapper {
     void insertUser(Users user);
 
     ArrayList<Users> getAllUsers();
+
+    void updateInformation(@Param("openid") String openid, @Param("name") String name, @Param("phone") String phone);
 }
