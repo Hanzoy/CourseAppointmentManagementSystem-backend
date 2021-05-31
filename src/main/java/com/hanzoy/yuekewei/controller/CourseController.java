@@ -56,4 +56,11 @@ public class CourseController {
         HasReservationCourseResult result = courseService.hasReservationCourse(param);
         return CommonResult.success(result);
     }
+
+    @ApiOperation("查询所有课程")
+    @PostMapping("/getCourse")
+    public CommonResult<GetCourseResult> getCourse(@RequestBody @Validated GetCourseParam param){
+        GetCourseResult result = courseService.getCourse(param);
+        return CommonResult.success(result);
+    }
 }

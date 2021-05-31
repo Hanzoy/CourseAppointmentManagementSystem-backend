@@ -259,4 +259,8 @@
           and
             tum.user_id = #{openid}
     </select>
+
+    <select id="getCourse" resultType="com.hanzoy.yuekewei.pojo.po.entity.Course">
+        select id, name, background_url AS backgroundUrl  from course
+    </select>
 </mapper>

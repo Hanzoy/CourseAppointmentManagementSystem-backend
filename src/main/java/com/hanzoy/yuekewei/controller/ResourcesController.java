@@ -64,6 +64,20 @@ public class ResourcesController {
         return CommonResult.success(coach);
     }
 
+    @ApiOperation("删除教练信息")
+    @PostMapping("/deleteCoach")
+    public CommonResult<DeleteCoachResult> deleteCoach(@RequestBody @Validated DeleteCoachParam param){
+        DeleteCoachResult result = coachService.deleteCoach(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("添加教练信息")
+    @PostMapping("/addCoach")
+    public CommonResult<AddCoachResult> addCoach(@RequestBody @Validated AddCoachParam param){
+        AddCoachResult result = coachService.addCoach(param);
+        return CommonResult.success(result);
+    }
+
     @ApiOperation("获取场馆信息")
     @GetMapping("/getVenue")
     public CommonResult<GetVenueResult> getVenue(){
@@ -106,7 +120,38 @@ public class ResourcesController {
 
         return uploadUrl;
     }
+    @ApiOperation("上传并修改caoch图片")
+    @RequestMapping(value = "/coach/uploadFile", method = RequestMethod.POST)
+    public String upLoadCoach(@RequestParam("file") MultipartFile file, @RequestParam( value = "id", required = false)Integer id, @RequestParam(value = "number",required = false)Integer number) {
+        String fileName = file.getOriginalFilename();
+        String uploadUrl = null;
+        try {
+            if (file != null) {
+                if (!"".equals(fileName.trim())) {
+                    File newFile = new File(fileName);
+                    FileOutputStream os = new FileOutputStream(newFile);
+                    os.write(file.getBytes());
+                    os.close();
+                    file.transferTo(newFile);
+                    // 上传到OSS
+                    uploadUrl = aliyunOSSUtil.upLoad(newFile);
+                    newFile.delete();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
+        pictureMapper.insertPicture(new Picture(null, uploadUrl, null));
+        Integer pictureId = pictureMapper.getIdByUrl(uploadUrl);
+        if(number == 0){
+            pictureMapper.changeCoachAvatarUrl(pictureId, id);
+        }else{
+            pictureMapper.changeCoachBackgroundUrl(pictureId, id);
+        }
+
+        return uploadUrl;
+    }
     @ApiOperation("上传并修改venue图片")
     @RequestMapping(value = "/venue/uploadFile", method = RequestMethod.POST)
     public String upLoadVenue(@RequestParam("file") MultipartFile file, @RequestParam( value = "id", required = false)Integer id) {
@@ -175,6 +220,13 @@ public class ResourcesController {
     @PostMapping("/editVenue")
     public CommonResult<EditVenueResult> editVenue(@RequestBody @Validated EditVenueParam param){
         EditVenueResult result = venueService.editVenue(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("修改教练信息")
+    @PostMapping("/editCoach")
+    public CommonResult<EditCoachResult> editCoach(@RequestBody @Validated EditCoachParam param){
+        EditCoachResult result = coachService.editCoach(param);
         return CommonResult.success(result);
     }
 }

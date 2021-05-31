@@ -13,4 +13,16 @@
             picture p2
                 on p2.id = c.background_url
     </select>
+
+    <delete id="deleteCoach">
+        delete from coach where id = #{id}
+    </delete>
+
+    <insert id="insertCoach" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into coach(name, remark, content) values (#{name}, #{remark}, #{content});
+    </insert>
+
+    <update id="editCoach">
+        update coach set name = #{name}, remark = #{remark}, content = #{content} where id = #{id}
+    </update>
 </mapper>

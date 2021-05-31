@@ -7,6 +7,7 @@ import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
 import com.hanzoy.yuekewei.pojo.dto.param.*;
 import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.*;
+import com.hanzoy.yuekewei.pojo.po.entity.Course;
 import com.hanzoy.yuekewei.service.CourseService;
 import com.hanzoy.yuekewei.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,6 +246,16 @@ public class CourseServiceImpl implements CourseService {
         }
 
         result.setCourseInfos(courseAndTimetableInfos);
+        return result;
+    }
+
+    @Override
+    public GetCourseResult getCourse(GetCourseParam param) {
+        GetCourseResult result = new GetCourseResult();
+
+        ArrayList<Course> course = courseMapper.getCourse();
+
+        result.setCourse(course);
         return result;
     }
 }

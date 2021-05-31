@@ -1,6 +1,7 @@
 package com.hanzoy.yuekewei.mapper;
 
 import com.hanzoy.yuekewei.pojo.po.*;
+import com.hanzoy.yuekewei.pojo.po.entity.Course;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -37,4 +38,6 @@ public interface CourseMapper {
     ArrayList<CourseAndTimetableInfo> getHasReservationCourse(@Param("openid") String openid);
 
     ArrayList<TimetableInfo> getHasReservationTimetables(@Param("openid") String openid, @Param("courseId") Integer courseId);
+
+    ArrayList<Course> getCourse();
 }

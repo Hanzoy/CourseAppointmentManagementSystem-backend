@@ -48,4 +48,12 @@
     <update id="editSwiper">
         update swiper_picture set name = #{name}, remark = #{remark} where id = #{id}
     </update>
+
+    <update id="changeCoachAvatarUrl">
+        update coach set avatar_url = #{pictureId} where id = #{coachId};
+    </update>
+
+    <update id="changeCoachBackgroundUrl">
+        update coach set background_url = #{pictureId} where id = #{coachId};
+    </update>
 </mapper>

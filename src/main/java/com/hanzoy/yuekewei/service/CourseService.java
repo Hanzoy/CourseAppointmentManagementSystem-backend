@@ -39,4 +39,6 @@ public interface CourseService {
      * @return
      */
     HasReservationCourseResult hasReservationCourse(HasReservationCourseParam param);
+
+    GetCourseResult getCourse(GetCourseParam param);
 }

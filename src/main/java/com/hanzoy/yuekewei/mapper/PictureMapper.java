@@ -28,4 +28,8 @@ public interface PictureMapper {
     void deleteSwiper(@Param("id") Integer id);
 
     void editSwiper(@Param("id") Integer id, @Param("name") String name, @Param("remark") String remark);
+
+    void changeCoachAvatarUrl(@Param("pictureId") Integer pictureId, @Param("coachId") Integer coachId);
+
+    void changeCoachBackgroundUrl(@Param("pictureId") Integer pictureId, @Param("coachId") Integer coachId);
 }
