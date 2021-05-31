@@ -1,13 +1,7 @@
 package com.hanzoy.yuekewei.service;
 
-import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.ReservationCourseParam;
-import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.ReservationCourseResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.Timetable;
 
 public interface CourseService {
@@ -38,4 +32,11 @@ public interface CourseService {
      * @return 返回对象
      */
     ReservationCourseResult reservationCourse(ReservationCourseParam param);
+
+    /**
+     * 查询用户当前已经预约的课程
+     * @param param
+     * @return
+     */
+    HasReservationCourseResult hasReservationCourse(HasReservationCourseParam param);
 }

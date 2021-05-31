@@ -33,4 +33,8 @@ public interface CourseMapper {
     ArrayList<CourseInfo> getUserCourseInfo(@Param("openid") String openid);
 
     ArrayList<OperationInfo> getUserOperationInfo(@Param("openid") String openid);
+
+    ArrayList<CourseAndTimetableInfo> getHasReservationCourse(@Param("openid") String openid);
+
+    ArrayList<TimetableInfo> getHasReservationTimetables(@Param("openid") String openid, @Param("courseId") Integer courseId);
 }

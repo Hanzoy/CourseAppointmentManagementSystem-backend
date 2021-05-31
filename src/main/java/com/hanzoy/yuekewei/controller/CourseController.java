@@ -1,14 +1,8 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
-import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.ReservationCourseParam;
-import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.ReservationCourseResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.service.CourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +47,13 @@ public class CourseController {
     @PostMapping("/reservationCourse")
     public CommonResult<ReservationCourseResult> reservationCourse(@RequestBody @Validated ReservationCourseParam param){
         ReservationCourseResult result = courseService.reservationCourse(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("用户查询已预约的课程")
+    @PostMapping("/hasReservationCourse")
+    public CommonResult<HasReservationCourseResult> hasReservationCourse(@RequestBody @Validated HasReservationCourseParam param){
+        HasReservationCourseResult result = courseService.hasReservationCourse(param);
         return CommonResult.success(result);
     }
 }

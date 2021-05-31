@@ -212,4 +212,51 @@
               cto.user_id = #{openid}
         order by cto.time DESC
     </select>
+
+    <select id="getHasReservationCourse" resultType="com.hanzoy.yuekewei.pojo.po.CourseAndTimetableInfo">
+        select c.name AS courseName, c.id AS id from course_time ct left join course c on c.id = ct.course_id where ct.user_id = #{openid}
+    </select>
+
+    <select id="getHasReservationTimetables" resultType="com.hanzoy.yuekewei.pojo.po.TimetableInfo">
+        select
+            t.course_id AS courseId,
+            c.name AS name,
+            p.url AS backgroundUrl,
+            ct.count AS surplusCount,
+            t.id AS timetableId,
+            coa.name AS coachName,
+            (select url from picture where id = coa.avatar_url) AS coachAvatarUrl,
+            t.date AS date,
+            t.start_time AS startTime,
+            t.end_time AS endTime,
+            t.toplimit AS toplimit,
+            t.remark AS remark,
+            t.address AS address,
+            (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count,
+            (select exists(select * from timetable_users_merge where user_id = #{openid} and timetable_id = t.id)) AS isReservation
+        from
+            timetable t
+                left join
+            course c
+            on t.course_id = c.id
+                left join
+            picture p
+            on c.background_url = p.id
+                left join
+            course_time ct
+            on c.id = ct.course_id
+                left join
+            timetable_coach_merge tcm
+            on t.id = tcm.timetable_id
+                left join
+            coach coa
+            on tcm.coach_id = coa.id
+                left join
+            timetable_users_merge tum
+            on tum.timetable_id = t.id
+        where
+            t.course_id = #{courseId}
+          and
+            tum.user_id = #{openid}
+    </select>
 </mapper>

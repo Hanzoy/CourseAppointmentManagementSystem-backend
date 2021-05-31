@@ -4,14 +4,8 @@ import com.hanzoy.utils.ClassCopyUtils.ClassCopyUtils;
 import com.hanzoy.yuekewei.mapper.CourseMapper;
 import com.hanzoy.yuekewei.pojo.bo.CourseTimetable;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
-import com.hanzoy.yuekewei.pojo.dto.param.GetCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetMyCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetReservationCourseInfoParam;
-import com.hanzoy.yuekewei.pojo.dto.param.ReservationCourseParam;
-import com.hanzoy.yuekewei.pojo.dto.result.GetCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetMyCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetReservationCourseInfoResult;
-import com.hanzoy.yuekewei.pojo.dto.result.ReservationCourseResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.*;
 import com.hanzoy.yuekewei.service.CourseService;
 import com.hanzoy.yuekewei.service.UserService;
@@ -233,6 +227,24 @@ public class CourseServiceImpl implements CourseService {
                 result.setMessage("取消预约成功");
             }
         }
+        return result;
+    }
+
+    @Override
+    public HasReservationCourseResult hasReservationCourse(HasReservationCourseParam param) {
+
+        HasReservationCourseResult result = new HasReservationCourseResult();
+
+        UserTokenInfo userTokenInfo = userService.getUserTokenInfo(param.getToken());
+
+        ArrayList<CourseAndTimetableInfo> courseAndTimetableInfos = courseMapper.getHasReservationCourse(userTokenInfo.getOpenid());
+
+        for (CourseAndTimetableInfo courseAndTimetableInfo : courseAndTimetableInfos) {
+            ArrayList<TimetableInfo> hasReservationTimetables = courseMapper.getHasReservationTimetables(userTokenInfo.getOpenid(), courseAndTimetableInfo.getId());
+            courseAndTimetableInfo.setTimetableInfos(hasReservationTimetables);
+        }
+
+        result.setCourseInfos(courseAndTimetableInfos);
         return result;
     }
 }

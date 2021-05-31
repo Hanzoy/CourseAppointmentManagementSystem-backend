@@ -1,14 +1,8 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
-import com.hanzoy.yuekewei.pojo.dto.param.ChangeInformationParam;
-import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
-import com.hanzoy.yuekewei.pojo.dto.result.ChangeInformationResult;
-import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +46,13 @@ public class UserController {
     @PostMapping("/changeInformation")
     public CommonResult<ChangeInformationResult> changeInformation(@RequestBody @Validated ChangeInformationParam param){
         ChangeInformationResult result = userService.changeInformation(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("获取用户信息")
+    @PostMapping("/getUserInfo")
+    public CommonResult<GetUserInfoResult> getUserInfo(@RequestBody @Validated GetUserInfoParam param){
+        GetUserInfoResult result = userService.getUserInfo(param);
         return CommonResult.success(result);
     }
 }

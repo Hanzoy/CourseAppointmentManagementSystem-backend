@@ -5,14 +5,9 @@ import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.mapper.UsersMapper;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
-import com.hanzoy.yuekewei.pojo.dto.param.ChangeInformationParam;
-import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
-import com.hanzoy.yuekewei.pojo.dto.result.ChangeInformationResult;
-import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
+import com.hanzoy.yuekewei.pojo.po.UserInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
 import com.hanzoy.yuekewei.service.UserService;
 import com.hanzoy.yuekewei.utils.WechatUtils.WechatUtils;
@@ -144,5 +139,18 @@ public class UserServiceImpl implements UserService {
 
         usersMapper.updateInformation(userTokenInfo.getOpenid(), param.getName(), param.getPhone());
         return null;
+    }
+
+    @Override
+    public GetUserInfoResult getUserInfo(GetUserInfoParam param) {
+
+        GetUserInfoResult result = new GetUserInfoResult();
+
+        UserTokenInfo userTokenInfo = getUserTokenInfo(param.getToken());
+
+        UserInfo userInfo = usersMapper.getUserInfo(userTokenInfo.getOpenid());
+
+        result.setUserInfo(userInfo);
+        return result;
     }
 }

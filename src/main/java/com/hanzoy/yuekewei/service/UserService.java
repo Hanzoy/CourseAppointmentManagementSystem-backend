@@ -1,14 +1,8 @@
 package com.hanzoy.yuekewei.service;
 
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
-import com.hanzoy.yuekewei.pojo.dto.param.ChangeInformationParam;
-import com.hanzoy.yuekewei.pojo.dto.param.CheckTokenParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserLoginParam;
-import com.hanzoy.yuekewei.pojo.dto.param.UserRegisterParam;
-import com.hanzoy.yuekewei.pojo.dto.result.ChangeInformationResult;
-import com.hanzoy.yuekewei.pojo.dto.result.CheckTokenResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserLoginResult;
-import com.hanzoy.yuekewei.pojo.dto.result.UserRegisterResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
 
 public interface UserService {
@@ -54,4 +48,7 @@ public interface UserService {
      * @return
      */
     ChangeInformationResult changeInformation(ChangeInformationParam param);
+
+    GetUserInfoResult getUserInfo(GetUserInfoParam param);
+
 }
