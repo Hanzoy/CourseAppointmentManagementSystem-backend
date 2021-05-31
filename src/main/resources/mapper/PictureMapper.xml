@@ -24,4 +24,28 @@
         from
              picture;
     </select>
+
+    <select id="getIdByUrl" resultType="int">
+        select id from picture where url = #{url};
+    </select>
+
+    <select id="manageGetSwiper" resultType="com.hanzoy.yuekewei.pojo.po.ManageSwiperInfo">
+        select sp.id AS id, sp.name AS name, p.url AS url, sp.remark AS remark from swiper_picture sp left join picture p on p.id = sp.picture_id
+    </select>
+
+    <update id="changeSwiperPicture">
+        update swiper_picture set picture_id = #{pictureId} where id = #{swiperId};
+    </update>
+
+    <insert id="insertSwiper" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into swiper_picture(name, remark) values(#{name}, #{remark});
+    </insert>
+
+    <delete id="deleteSwiper">
+        delete from swiper_picture where id = #{id};
+    </delete>
+
+    <update id="editSwiper">
+        update swiper_picture set name = #{name}, remark = #{remark} where id = #{id}
+    </update>
 </mapper>

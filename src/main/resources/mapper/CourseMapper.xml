@@ -174,4 +174,42 @@
           and
               user_id = #{openid}
     </delete>
+
+    <select id="getUserCourseInfo" resultType="com.hanzoy.yuekewei.pojo.po.CourseInfo">
+        select
+               c.id AS id,
+               c.name AS name,
+               c.background_url AS backgroundUrl,
+               ct.count AS count
+        from
+             course_time ct
+        left join
+                 course c
+        on
+            c.id = ct.course_id
+        where
+              ct.user_id = #{openid}
+    </select>
+
+    <select id="getUserOperationInfo" resultType="com.hanzoy.yuekewei.pojo.po.OperationInfo">
+        select
+               c.name AS courseName,
+               t.date AS date,
+               CONCAT(t.start_time,'-',t.end_time) AS time,
+               cto.operation AS operation,
+               cto.time AS timestamp
+        from
+             course_time_operation cto
+        left join
+                 timetable t
+        on
+            t.id = cto.timetable_id
+        left join
+                 course c
+        on
+            c.id = t.course_id
+        where
+              cto.user_id = #{openid}
+        order by cto.time DESC
+    </select>
 </mapper>

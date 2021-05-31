@@ -1,5 +1,7 @@
 package com.hanzoy.yuekewei.service;
 
+import com.hanzoy.yuekewei.pojo.dto.param.AddVenueParam;
+import com.hanzoy.yuekewei.pojo.dto.result.AddVenueResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetVenueResult;
 
 /**
@@ -11,4 +13,6 @@ public interface VenueService {
      * @return 教练信息返回包装类
      */
     GetVenueResult getVenue();
+
+    AddVenueResult addVenue(AddVenueParam param);
 }

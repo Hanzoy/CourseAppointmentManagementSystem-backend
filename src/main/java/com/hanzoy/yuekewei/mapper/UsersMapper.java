@@ -1,5 +1,6 @@
 package com.hanzoy.yuekewei.mapper;
 
+import com.hanzoy.yuekewei.pojo.po.UserInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,4 +14,8 @@ public interface UsersMapper {
     ArrayList<Users> getAllUsers();
 
     void updateInformation(@Param("openid") String openid, @Param("name") String name, @Param("phone") String phone);
+
+    ArrayList<Users> getAllUsersByKey(@Param("key") String key);
+
+    UserInfo getUserInfo(@Param("openid") String openid);
 }

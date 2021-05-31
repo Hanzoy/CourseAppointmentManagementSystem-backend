@@ -1,9 +1,7 @@
 package com.hanzoy.yuekewei.service;
 
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllPictureParam;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllPictureResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetCoachResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetSwiperResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 
 /**
  * 静态资源管理
@@ -23,4 +21,11 @@ public interface StaticResourceService {
      */
     GetAllPictureResult getAllPicture(GetAllPictureParam param);
 
+    ManageGetSwiperResult manageGetSwiper(ManageGetSwiperParam param);
+
+    AddSwiperResult addSwiper(AddSwiperParam param);
+
+    DeleteSwiperResult deleteSwiper(DeleteSwiperParam param);
+
+    EditSwiperResult editSwiper(EditSwiperParam param);
 }

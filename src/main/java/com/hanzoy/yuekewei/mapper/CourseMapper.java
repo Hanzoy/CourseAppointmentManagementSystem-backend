@@ -29,4 +29,8 @@ public interface CourseMapper {
     void addUserToTimetable(@Param("openid") String openid, @Param("timetableId") Integer timetableId);
 
     void deleteUserToTimetable(@Param("openid") String openid, @Param("timetableId") Integer timetableId);
+
+    ArrayList<CourseInfo> getUserCourseInfo(@Param("openid") String openid);
+
+    ArrayList<OperationInfo> getUserOperationInfo(@Param("openid") String openid);
 }

@@ -1,14 +1,8 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
-import com.hanzoy.yuekewei.pojo.dto.param.ChangeUserInformationParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
-import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
-import com.hanzoy.yuekewei.pojo.dto.result.ChangeUserInformationResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
-import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.service.ManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +39,20 @@ public class ManageController {
     @PostMapping("/getAllUsers")
     public CommonResult<GetAllUsersResult> getAllUsers(@RequestBody @Validated GetAllUsersParam param){
         GetAllUsersResult result = manageService.getAllUsers(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("关键字查看所有用户")
+    @PostMapping("/getAllUsersByKey")
+    public CommonResult<GetAllUsersByKeyResult> getAllUsersByKey(@RequestBody @Validated GetAllUsersByKeyParam param){
+        GetAllUsersByKeyResult result = manageService.getAllUsersByKey(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("查看用户详细信息以及课程订单")
+    @PostMapping("/getUserInfo")
+    public CommonResult<GetUserInfoResult> getUserInfo(@RequestBody @Validated GetUserInfoParam param){
+        GetUserInfoResult result = manageService.getUserInfo(param);
         return CommonResult.success(result);
     }
 

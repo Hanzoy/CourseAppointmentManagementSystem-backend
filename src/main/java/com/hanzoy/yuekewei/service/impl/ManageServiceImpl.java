@@ -3,24 +3,18 @@ package com.hanzoy.yuekewei.service.impl;
 import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.utils.MD5Utils.MD5Utils;
 import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
+import com.hanzoy.yuekewei.mapper.CourseMapper;
 import com.hanzoy.yuekewei.mapper.ManageMapper;
 import com.hanzoy.yuekewei.mapper.UsersMapper;
 import com.hanzoy.yuekewei.pojo.bo.AdminTokenInfo;
-import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
-import com.hanzoy.yuekewei.pojo.dto.param.ChangeUserInformationParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllCoursesParam;
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllUsersParam;
-import com.hanzoy.yuekewei.pojo.dto.param.ManageLoginParam;
-import com.hanzoy.yuekewei.pojo.dto.result.ChangeUserInformationResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllCoursesResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllUsersResult;
-import com.hanzoy.yuekewei.pojo.dto.result.ManageLoginResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.CourseAndUserInfo;
 import com.hanzoy.yuekewei.pojo.po.UserCourseTimeInfo;
+import com.hanzoy.yuekewei.pojo.po.UserInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Admin;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
 import com.hanzoy.yuekewei.service.ManageService;
-import com.hanzoy.yuekewei.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +29,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Resource
     UsersMapper usersMapper;
+
+    @Resource
+    CourseMapper courseMapper;
 
     @Autowired
     JWTUtils jwtUtils;
@@ -125,5 +122,45 @@ public class ManageServiceImpl implements ManageService {
         usersMapper.updateInformation(param.getOpenid(), param.getName(), param.getPhone());
 
         return null;
+    }
+
+    @Override
+    public GetAllUsersByKeyResult getAllUsersByKey(GetAllUsersByKeyParam param) {
+        GetAllUsersByKeyResult result = new GetAllUsersByKeyResult();
+
+        //获取token内容
+        AdminTokenInfo tokenInfo = getAdminTokenInfo(param.getToken());
+
+        //检查token
+        if(tokenInfo.getId() == null){
+            throw new TokenErrorException("未识别token");
+        }
+
+        ArrayList<Users> users = usersMapper.getAllUsersByKey(param.getKey());
+
+        result.setUsers(users);
+
+        return result;
+    }
+
+    @Override
+    public GetUserInfoResult getUserInfo(GetUserInfoParam param) {
+
+        GetUserInfoResult result = new GetUserInfoResult();
+
+        //获取token内容
+        AdminTokenInfo tokenInfo = getAdminTokenInfo(param.getToken());
+
+        //检查token
+        if(tokenInfo.getId() == null){
+            throw new TokenErrorException("未识别token");
+        }
+
+        UserInfo userInfo = usersMapper.getUserInfo(param.getOpenid());
+        userInfo.setCourse(courseMapper.getUserCourseInfo(param.getOpenid()));
+        userInfo.setOperation(courseMapper.getUserOperationInfo(param.getOpenid()));
+
+        result.setUserInfo(userInfo);
+        return result;
     }
 }

@@ -24,4 +24,20 @@
     <update id="updateInformation">
         update users set name = #{name}, phone = #{phone} where openid = #{openid};
     </update>
+    <select id="getAllUsersByKey" resultType="com.hanzoy.yuekewei.pojo.po.entity.Users">
+        select
+               openid, name, nick_name AS nickName, avatar_url AS avatarUrl, phone
+        from
+             users
+        where
+              phone like CONCAT('%', #{key}, '%')
+           or
+              name like CONCAT('%', #{key}, '%')
+           or
+              nick_name like CONCAT('%', #{key}, '%')
+    </select>
+    
+    <select id="getUserInfo" resultType="com.hanzoy.yuekewei.pojo.po.UserInfo">
+        select name, nick_name AS nickName, phone, avatar_url AS avatarUrl from users where openid = #{openid}
+    </select>
 </mapper>

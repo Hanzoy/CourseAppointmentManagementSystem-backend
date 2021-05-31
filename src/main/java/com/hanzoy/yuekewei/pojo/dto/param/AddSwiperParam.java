@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class GetAllPictureParam {
+public class AddSwiperParam {
     @NotEmpty(message = "不能为空")
     private String token;
+    private String name;
+    private String remark;
 }

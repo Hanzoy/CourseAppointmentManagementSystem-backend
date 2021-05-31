@@ -10,4 +10,8 @@
             picture p
                 on p.id = v.picture_url
     </select>
+
+    <insert id="insertVenue" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into venue(name, address) values (#{name}, #{address});
+    </insert>
 </mapper>

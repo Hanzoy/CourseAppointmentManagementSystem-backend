@@ -3,9 +3,11 @@ package com.hanzoy.yuekewei.controller;
 import com.hanzoy.yuekewei.mapper.PictureMapper;
 import com.hanzoy.yuekewei.pojo.po.entity.Picture;
 import com.hanzoy.yuekewei.utils.aliyunOSSUtils.AliyunOSSUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +28,9 @@ public class AliyunOSSController {
     @Resource
     PictureMapper pictureMapper;
 
-    @RequestMapping("/uploadFile")
-    public String upLoad(@RequestParam("file")MultipartFile file, @RequestParam("remark")String remark) {
+    @ApiOperation("上传图片")
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public String upLoad(@RequestParam("file")MultipartFile file, @RequestParam( value = "remark", required = false)String remark) {
         String fileName = file.getOriginalFilename();
         System.out.println(fileName);
         String uploadUrl = null;

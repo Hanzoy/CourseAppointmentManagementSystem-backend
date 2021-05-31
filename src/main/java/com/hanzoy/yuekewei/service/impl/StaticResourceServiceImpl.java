@@ -3,12 +3,12 @@ package com.hanzoy.yuekewei.service.impl;
 import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.mapper.CoachMapper;
 import com.hanzoy.yuekewei.mapper.PictureMapper;
-import com.hanzoy.yuekewei.pojo.dto.param.GetAllPictureParam;
-import com.hanzoy.yuekewei.pojo.dto.result.GetAllPictureResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetCoachResult;
-import com.hanzoy.yuekewei.pojo.dto.result.GetSwiperResult;
+import com.hanzoy.yuekewei.pojo.dto.param.*;
+import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.CoachInfo;
+import com.hanzoy.yuekewei.pojo.po.ManageSwiperInfo;
 import com.hanzoy.yuekewei.pojo.po.PictureInfo;
+import com.hanzoy.yuekewei.pojo.po.entity.SwiperPicture;
 import com.hanzoy.yuekewei.service.ManageService;
 import com.hanzoy.yuekewei.service.StaticResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,43 @@ public class StaticResourceServiceImpl implements StaticResourceService {
         //将结果写入返回对象
         result.setPictures(allPicture);
         return result;
+    }
+
+    @Override
+    public ManageGetSwiperResult manageGetSwiper(ManageGetSwiperParam param) {
+        ManageGetSwiperResult result = new ManageGetSwiperResult();
+
+        ArrayList<ManageSwiperInfo> manageSwiperInfos = pictureMapper.manageGetSwiper();
+
+        result.setSwiperInfo(manageSwiperInfos);
+        return result;
+    }
+
+    @Override
+    public AddSwiperResult addSwiper(AddSwiperParam param) {
+
+        AddSwiperResult result = new AddSwiperResult();
+
+        SwiperPicture picture = new SwiperPicture();
+        picture.setName(param.getName());
+        picture.setRemark(param.getRemark());
+        pictureMapper.insertSwiper(picture);
+        result.setId(picture.getId());
+        return result;
+    }
+
+    @Override
+    public DeleteSwiperResult deleteSwiper(DeleteSwiperParam param) {
+
+        pictureMapper.deleteSwiper(param.getId());
+
+        return null;
+    }
+
+    @Override
+    public EditSwiperResult editSwiper(EditSwiperParam param) {
+        pictureMapper.editSwiper(param.getId(), param.getName(), param.getRemark());
+        return null;
     }
 
 

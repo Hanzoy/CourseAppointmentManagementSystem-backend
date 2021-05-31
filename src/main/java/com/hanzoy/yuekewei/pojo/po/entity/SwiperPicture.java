@@ -16,4 +16,8 @@ public class SwiperPicture {
      * 对应picture表中主键
      */
     private Integer pictureId;
+
+    private String name;
+
+    private String remark;
 }

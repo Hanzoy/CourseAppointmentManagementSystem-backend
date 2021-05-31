@@ -31,4 +31,9 @@ public class Users {
      * 用户电话
      */
     private String phone;
+
+    /**
+     * 创建时间
+     */
+    private String time;
 }

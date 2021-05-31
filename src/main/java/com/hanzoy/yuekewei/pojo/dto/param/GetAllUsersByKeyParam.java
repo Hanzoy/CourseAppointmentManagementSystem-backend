@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class GetAllPictureParam {
+public class GetAllUsersByKeyParam {
     @NotEmpty(message = "不能为空")
     private String token;
+    @NotEmpty(message = "不能为空")
+    private String key;
 }
