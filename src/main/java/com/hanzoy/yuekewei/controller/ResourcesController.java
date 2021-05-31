@@ -1,6 +1,7 @@
 package com.hanzoy.yuekewei.controller;
 
 import com.hanzoy.yuekewei.mapper.PictureMapper;
+import com.hanzoy.yuekewei.mapper.VenueMapper;
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
 import com.hanzoy.yuekewei.pojo.dto.param.*;
 import com.hanzoy.yuekewei.pojo.dto.result.*;
@@ -32,6 +33,9 @@ public class ResourcesController {
 
     @Autowired
     VenueService venueService;
+
+    @Resource
+    VenueMapper venueMapper;
 
     @Autowired
     private AliyunOSSUtil aliyunOSSUtil;
@@ -76,7 +80,7 @@ public class ResourcesController {
 
     @ApiOperation("上传并修改swiper图片")
     @RequestMapping(value = "/swiper/uploadFile", method = RequestMethod.POST)
-    public String upLoad(@RequestParam("file") MultipartFile file, @RequestParam( value = "id", required = false)Integer id) {
+    public String upLoadSwiper(@RequestParam("file") MultipartFile file, @RequestParam( value = "id", required = false)Integer id) {
         String fileName = file.getOriginalFilename();
         String uploadUrl = null;
         try {
@@ -103,6 +107,35 @@ public class ResourcesController {
         return uploadUrl;
     }
 
+    @ApiOperation("上传并修改venue图片")
+    @RequestMapping(value = "/venue/uploadFile", method = RequestMethod.POST)
+    public String upLoadVenue(@RequestParam("file") MultipartFile file, @RequestParam( value = "id", required = false)Integer id) {
+        String fileName = file.getOriginalFilename();
+        String uploadUrl = null;
+        try {
+            if (file != null) {
+                if (!"".equals(fileName.trim())) {
+                    File newFile = new File(fileName);
+                    FileOutputStream os = new FileOutputStream(newFile);
+                    os.write(file.getBytes());
+                    os.close();
+                    file.transferTo(newFile);
+                    // 上传到OSS
+                    uploadUrl = aliyunOSSUtil.upLoad(newFile);
+                    newFile.delete();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        pictureMapper.insertPicture(new Picture(null, uploadUrl, null));
+        Integer pictureId = pictureMapper.getIdByUrl(uploadUrl);
+//        pictureMapper.changeSwiperPicture(pictureId, id);
+        venueMapper.changeVenuePicture(pictureId, id);
+        return uploadUrl;
+    }
+
     @ApiOperation("添加滑动条")
     @PostMapping("/addSwiper")
     public CommonResult<AddSwiperResult> addSwiper(@RequestBody @Validated AddSwiperParam param){
@@ -124,10 +157,24 @@ public class ResourcesController {
         return CommonResult.success(result);
     }
 
+    @ApiOperation("删除场馆")
+    @PostMapping("/deleteVenue")
+    public CommonResult<DeleteVenueResult> deleteSwiper(@RequestBody @Validated DeleteVenueParam param){
+        DeleteVenueResult result = venueService.deleteVenue(param);
+        return CommonResult.success(result);
+    }
+
     @ApiOperation("修改滑动条")
     @PostMapping("/editSwiper")
     public CommonResult<EditSwiperResult> editSwiper(@RequestBody @Validated EditSwiperParam param){
         EditSwiperResult result = staticResourceService.editSwiper(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("修改场馆")
+    @PostMapping("/editVenue")
+    public CommonResult<EditVenueResult> editVenue(@RequestBody @Validated EditVenueParam param){
+        EditVenueResult result = venueService.editVenue(param);
         return CommonResult.success(result);
     }
 }

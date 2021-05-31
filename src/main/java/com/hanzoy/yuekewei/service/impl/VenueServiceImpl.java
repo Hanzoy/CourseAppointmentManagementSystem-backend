@@ -2,7 +2,11 @@ package com.hanzoy.yuekewei.service.impl;
 
 import com.hanzoy.yuekewei.mapper.VenueMapper;
 import com.hanzoy.yuekewei.pojo.dto.param.AddVenueParam;
+import com.hanzoy.yuekewei.pojo.dto.param.DeleteVenueParam;
+import com.hanzoy.yuekewei.pojo.dto.param.EditVenueParam;
 import com.hanzoy.yuekewei.pojo.dto.result.AddVenueResult;
+import com.hanzoy.yuekewei.pojo.dto.result.DeleteVenueResult;
+import com.hanzoy.yuekewei.pojo.dto.result.EditVenueResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetVenueResult;
 import com.hanzoy.yuekewei.pojo.po.VenueInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Venue;
@@ -39,5 +43,18 @@ public class VenueServiceImpl implements VenueService {
 
         result.setId(venue.getId());
         return result;
+    }
+
+
+    @Override
+    public EditVenueResult editVenue(EditVenueParam param) {
+        venueMapper.editVenue(param.getId(), param.getName(), param.getAddress());
+        return null;
+    }
+
+    @Override
+    public DeleteVenueResult deleteVenue(DeleteVenueParam param) {
+        venueMapper.deleteVenue(param.getId());
+        return null;
     }
 }

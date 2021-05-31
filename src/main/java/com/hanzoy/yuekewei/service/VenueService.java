@@ -1,7 +1,11 @@
 package com.hanzoy.yuekewei.service;
 
 import com.hanzoy.yuekewei.pojo.dto.param.AddVenueParam;
+import com.hanzoy.yuekewei.pojo.dto.param.DeleteVenueParam;
+import com.hanzoy.yuekewei.pojo.dto.param.EditVenueParam;
 import com.hanzoy.yuekewei.pojo.dto.result.AddVenueResult;
+import com.hanzoy.yuekewei.pojo.dto.result.DeleteVenueResult;
+import com.hanzoy.yuekewei.pojo.dto.result.EditVenueResult;
 import com.hanzoy.yuekewei.pojo.dto.result.GetVenueResult;
 
 /**
@@ -15,4 +19,8 @@ public interface VenueService {
     GetVenueResult getVenue();
 
     AddVenueResult addVenue(AddVenueParam param);
+
+    EditVenueResult editVenue(EditVenueParam param);
+
+    DeleteVenueResult deleteVenue(DeleteVenueParam param);
 }

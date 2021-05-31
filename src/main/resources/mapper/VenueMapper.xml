@@ -14,4 +14,16 @@
     <insert id="insertVenue" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into venue(name, address) values (#{name}, #{address});
     </insert>
+
+    <update id="editVenue">
+        update venue set name = #{name}, address = #{address} where id = #{id}
+    </update>
+
+    <delete id="deleteVenue">
+        delete from venue where id = #{id}
+    </delete>
+
+    <update id="changeVenuePicture">
+        update venue set picture_url = #{pictureId} where id = #{id}
+    </update>
 </mapper>

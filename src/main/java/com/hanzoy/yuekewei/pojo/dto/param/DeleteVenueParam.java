@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class DeleteSwiperParam {
+public class DeleteVenueParam {
     @NotEmpty(message = "不能为空")
     private String token;
     private Integer id;
