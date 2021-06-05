@@ -22,7 +22,7 @@ public class TimetableInfo {
     /**
      * 剩余课时数量
      */
-    private Integer surplusCount;
+    private Double surplusCount;
 
     /**
      * timetable Id
@@ -78,4 +78,6 @@ public class TimetableInfo {
      * 是否预约
      */
     private Boolean isReservation;
+
+    private Double cost;
 }

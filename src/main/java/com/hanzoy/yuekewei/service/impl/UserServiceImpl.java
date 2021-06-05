@@ -153,4 +153,19 @@ public class UserServiceImpl implements UserService {
         result.setUserInfo(userInfo);
         return result;
     }
+
+    @Override
+    public UpdateCourseTimeResult updateCourseTime(UpdateCourseTimeParam param) {
+
+        usersMapper.updateCourseTime(param.getOpenid(), param.getCourseId(), param.getCount());
+
+        return null;
+    }
+
+    @Override
+    public AddCourseTimeResult addCourseTime(AddCourseTimeParam param) {
+        usersMapper.addCourseTime(param.getOpenid(), param.getCourseId(), param.getCount());
+
+        return null;
+    }
 }

@@ -22,4 +22,14 @@ public interface ManageService {
     GetAllUsersByKeyResult getAllUsersByKey(GetAllUsersByKeyParam param);
 
     GetUserInfoResult getUserInfo(GetUserInfoParam param);
+
+    GetEXTimetableResult getEXTimetable(GetEXTimetableParam param);
+
+    AddEXTimetableResult addEXTimetable(AddEXTimetableParam param);
+
+    DeleteEXTimetableResult deleteEXTimetable(DeleteEXTimetableParam param);
+
+    EditEXTimetableResult editEXTimetable(EditEXTimetableParam param);
+
+    ChangePasswordResult changePassword(ChangePasswordParam param);
 }

@@ -21,4 +21,6 @@ public class Course {
      * 课程背景图片
      */
     private Integer backgroundUrl;
+
+    private Double money;
 }

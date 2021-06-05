@@ -18,4 +18,8 @@ public interface UsersMapper {
     ArrayList<Users> getAllUsersByKey(@Param("key") String key);
 
     UserInfo getUserInfo(@Param("openid") String openid);
+
+    void updateCourseTime(@Param("openid")String openid, @Param("courseId") Integer courseId, @Param("count") Double count);
+
+    void addCourseTime(@Param("openid")String openid, @Param("courseId") Integer courseId, @Param("count") Double count);
 }

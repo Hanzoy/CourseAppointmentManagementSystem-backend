@@ -40,4 +40,12 @@
     <select id="getUserInfo" resultType="com.hanzoy.yuekewei.pojo.po.UserInfo">
         select name, nick_name AS nickName, phone, avatar_url AS avatarUrl from users where openid = #{openid}
     </select>
+
+    <update id="updateCourseTime">
+        update course_time set count = #{count} where user_id = #{openid} and course_id = #{courseId};
+    </update>
+
+    <insert id="addCourseTime">
+        insert into course_time(user_id, course_id, count) VALUES (#{openid}, #{courseId}, #{count});
+    </insert>
 </mapper>

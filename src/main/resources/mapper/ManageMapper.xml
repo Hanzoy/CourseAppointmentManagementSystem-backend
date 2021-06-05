@@ -12,9 +12,13 @@
               password = #{password}
     </select>
 
+    <update id="changePassword">
+        update admin set password = #{password} where id = #{id}
+    </update>
+
     <select id="getAllCourseInfo" resultType="com.hanzoy.yuekewei.pojo.po.CourseAndUserInfo">
         select
-               id, name, background_url
+               id, name, background_url AS backgroundUrl, money
         from
              course
     </select>
@@ -35,4 +39,60 @@
         where
               ct.course_id = #{courseId}
     </select>
+
+    <select id="getEXTimetableByWeekAndCourseId" resultType="com.hanzoy.yuekewei.pojo.po.TimetableExampleInfo">
+        select
+               id AS id,
+               course_id AS courseId,
+               week AS week,
+               start_time AS startTime,
+               end_time AS endTime,
+               toplimit AS toplimit,
+               remark AS remark,
+               address AS address,
+               coach_id AS coachId,
+               cost AS cost
+        from
+             timetable_example
+        where
+              course_id = #{courseId}
+          and
+              week = #{week}
+        order by
+                 start_time DESC
+    </select>
+
+    <select id="getEXTimetableByWeek" resultType="com.hanzoy.yuekewei.pojo.po.TimetableExampleInfo">
+        select
+               id AS id,
+               course_id AS courseId,
+               week AS week,
+               start_time AS startTime,
+               end_time AS endTime,
+               toplimit AS toplimit,
+               remark AS remark,
+               address AS address,
+               coach_id AS coachId,
+               cost AS cost
+        from
+             timetable_example
+        where
+              week = #{week}
+        order by
+                 start_time DESC
+    </select>
+
+    <insert id="insertEXTimetable" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into
+            timetable_example(course_id, week, start_time, end_time, toplimit, remark, address, coach_id, cost)
+            VALUES (#{courseId}, #{week}, #{startTime}, #{endTime}, #{toplimit}, #{remark}, #{address}, #{coachId}, #{cost})
+    </insert>
+
+    <delete id="deleteEXTimetable">
+        delete from timetable_example where id = #{id};
+    </delete>
+
+    <update id="editEXTimetable">
+        update timetable_example set remark = #{remark}, address = #{address}, course_id = #{courseId}, end_time = #{endTime}, start_time = #{startTime}, toplimit = #{toplimit}, week = #{week}, coach_id = #{coachId}, cost = #{cost} where id = #{id};
+    </update>
 </mapper>

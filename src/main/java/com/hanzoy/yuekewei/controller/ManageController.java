@@ -28,6 +28,13 @@ public class ManageController {
         return CommonResult.success(result);
     }
 
+    @ApiOperation("修改密码")
+    @PostMapping("/changePassword")
+    public CommonResult<ChangePasswordResult> changePassword(@RequestBody @Validated ChangePasswordParam param){
+        ChangePasswordResult result = manageService.changePassword(param);
+        return CommonResult.success(result);
+    }
+
     @ApiOperation("查看当前所有的课程")
     @PostMapping("/getAllCourses")
     public CommonResult<GetAllCoursesResult> getAllCourses(@RequestBody @Validated GetAllCoursesParam param){
@@ -60,6 +67,34 @@ public class ManageController {
     @PostMapping("/changeUserInformation")
     public CommonResult<ChangeUserInformationResult> changeUserInformation(@RequestBody @Validated ChangeUserInformationParam param){
         ChangeUserInformationResult result = manageService.changeUserInformation(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("查看课程表模版")
+    @PostMapping("/getEXTimetable")
+    public CommonResult<GetEXTimetableResult> getEXTimetable(@RequestBody @Validated GetEXTimetableParam param){
+        GetEXTimetableResult result = manageService.getEXTimetable(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("添加课程表模版")
+    @PostMapping("/addEXTimetable")
+    public CommonResult<AddEXTimetableResult> addEXTimetable(@RequestBody @Validated AddEXTimetableParam param){
+        AddEXTimetableResult result = manageService.addEXTimetable(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("删除课程模版")
+    @PostMapping("/deleteEXTimetable")
+    public CommonResult<DeleteEXTimetableResult> deleteEXTimetable(@RequestBody @Validated DeleteEXTimetableParam param){
+        DeleteEXTimetableResult result = manageService.deleteEXTimetable(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("修改课程模版")
+    @PostMapping("/editEXTimetable")
+    public CommonResult<EditEXTimetableResult> editEXTimetable(@RequestBody @Validated EditEXTimetableParam param){
+        EditEXTimetableResult result = manageService.editEXTimetable(param);
         return CommonResult.success(result);
     }
 }

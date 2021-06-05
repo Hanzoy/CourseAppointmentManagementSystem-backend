@@ -3,7 +3,7 @@
 <mapper namespace="com.hanzoy.yuekewei.mapper.CourseMapper">
     <select id="getCourseByUserOpenid" resultType="com.hanzoy.yuekewei.pojo.po.CourseInfo">
         select
-               c.id, c.name, p.url AS backgroundUrl, ct.count
+               c.id, c.name, p.url AS backgroundUrl, ct.count, c.money
         from
              course_time ct
         right join
@@ -68,7 +68,8 @@
                t.remark AS remark,
                t.address AS address,
                (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count,
-               (select exists(select * from timetable_users_merge where user_id = #{openid} and timetable_id = #{timetableId})) AS isReservation
+               (select exists(select * from timetable_users_merge where user_id = #{openid} and timetable_id = #{timetableId})) AS isReservation,
+               t.cost AS cost
         from
              timetable t
         left join
@@ -121,7 +122,7 @@
             t.id = #{timetableId}
     </select>
 
-    <select id="getCourseTime" resultType="int">
+    <select id="getCourseTime" resultType="double">
         select
                count
         from
@@ -180,7 +181,8 @@
                c.id AS id,
                c.name AS name,
                c.background_url AS backgroundUrl,
-               ct.count AS count
+               ct.count AS count,
+               c.money AS money
         from
              course_time ct
         left join
@@ -260,7 +262,130 @@
             tum.user_id = #{openid}
     </select>
 
-    <select id="getCourse" resultType="com.hanzoy.yuekewei.pojo.po.entity.Course">
-        select id, name, background_url AS backgroundUrl  from course
+    <select id="getCourse" resultType="com.hanzoy.yuekewei.pojo.po.CourseInfo">
+        select c.id, name, p.url AS backgroundUrl, c.money  from course c left join picture p on c.background_url = p.id
     </select>
+
+    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into course(name) values (#{name});
+    </insert>
+
+    <update id="editCourse">
+        update course set name = #{name}, money = #{money} where id = #{id}
+    </update>
+
+    <delete id="deleteCourse">
+        delete from course where id = #{id}
+    </delete>
+
+    <update id="changePicture">
+        update course set background_url = #{pictureId} where id = #{id};
+    </update>
+
+    <select id="getTimetableByYearAndMonth" resultType="com.hanzoy.yuekewei.pojo.po.TimetableInfo">
+        select
+            t.course_id AS courseId,
+            c.name AS name,
+            p.url AS backgroundUrl,
+            t.id AS timetableId,
+            coa.name AS coachName,
+            (select url from picture where id = coa.avatar_url) AS coachAvatarUrl,
+            t.date AS date,
+            t.start_time AS startTime,
+            t.end_time AS endTime,
+            t.toplimit AS toplimit,
+            t.remark AS remark,
+            t.address AS address,
+            (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count,
+            t.cost AS cost
+        from
+            timetable t
+                left join
+            course c
+            on t.course_id = c.id
+                left join
+            picture p
+            on c.background_url = p.id
+                left join
+            timetable_coach_merge tcm
+            on t.id = tcm.timetable_id
+                left join
+            coach coa
+            on tcm.coach_id = coa.id
+                left join
+            timetable_users_merge tum
+            on tum.timetable_id = t.id
+        where
+            t.date like CONCAT(#{year},'-','%',#{month},'%')
+            order by t.start_time ;
+    </select>
+
+    <select id="getTimetableByDateAndCourseId" resultType="com.hanzoy.yuekewei.pojo.po.TimetableInfos">
+        select
+            t.course_id AS courseId,
+            c.name AS name,
+            p.url AS backgroundUrl,
+            t.id AS timetableId,
+            coa.name AS coachName,
+            tcm.coach_id AS coachId,
+            (select url from picture where id = coa.avatar_url) AS coachAvatarUrl,
+            t.date AS date,
+            t.start_time AS startTime,
+            t.end_time AS endTime,
+            t.toplimit AS toplimit,
+            t.remark AS remark,
+            t.address AS address,
+            (select count(id) from timetable_users_merge tum where tum.timetable_id = t.id) AS count,
+            t.cost AS cost
+        from
+            timetable t
+                left join
+            course c
+            on t.course_id = c.id
+                left join
+            picture p
+            on c.background_url = p.id
+                left join
+            timetable_coach_merge tcm
+            on t.id = tcm.timetable_id
+                left join
+            coach coa
+            on tcm.coach_id = coa.id
+                left join
+            timetable_users_merge tum
+            on tum.timetable_id = t.id
+        where
+              t.date = #{date}
+          and
+              t.course_id = #{courseId} order by t.start_time ;
+    </select>
+
+    <insert id="addTimetable" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into timetable(course_id, date, start_time, end_time, toplimit, remark, address, cost)
+        VALUES (#{courseId}, #{date}, #{startTime}, #{endTime}, #{toplimit}, #{remark}, #{address}, #{cost})
+    </insert>
+
+    <select id="searchCoachByTimetableId" resultType="boolean">
+        select exists(select * from timetable_coach_merge where timetable_id = #{timetableId})
+    </select>
+
+    <delete id="deleteTimetable">
+        delete from timetable where id = #{id}
+    </delete>
+
+    <delete id="deleteTimetableByDate">
+        delete from timetable where date = #{date}
+    </delete>
+
+    <update id="editTimetable">
+        update timetable set course_id = #{courseId}, start_time = #{startTime}, end_time = #{endTime}, remark = #{remark}, toplimit = #{toplimit}, address = #{address}, cost = #{cost} where id = #{timetableId}
+    </update>
+
+    <update id="updateCoach">
+        update timetable_coach_merge set coach_id = #{coachId} where timetable_id = #{timetableId}
+    </update>
+
+    <insert id="insertCoach">
+        insert into timetable_coach_merge(timetable_id, coach_id) values (#{timetableId}, #{coachId});
+    </insert>
 </mapper>

@@ -51,4 +51,7 @@ public interface UserService {
 
     GetUserInfoResult getUserInfo(GetUserInfoParam param);
 
+    UpdateCourseTimeResult updateCourseTime(UpdateCourseTimeParam param);
+
+    AddCourseTimeResult addCourseTime(AddCourseTimeParam param);
 }

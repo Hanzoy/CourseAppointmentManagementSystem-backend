@@ -22,5 +22,8 @@ public class CourseInfo {
     /**
      * 剩余课时数量
      */
-    private Integer count;
+    private Double count;
+
+
+    private Double money;
 }

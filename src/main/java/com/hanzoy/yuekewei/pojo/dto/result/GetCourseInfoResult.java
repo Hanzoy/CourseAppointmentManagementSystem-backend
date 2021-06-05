@@ -22,7 +22,7 @@ public class GetCourseInfoResult {
     /**
      * 剩余课时数量
      */
-    private Integer surplusCount;
+    private Double surplusCount;
 
     /**
      * timetable Id

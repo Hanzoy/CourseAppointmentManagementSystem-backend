@@ -46,4 +46,8 @@ public class TimetableExample {
      * 地址
      */
     private String address;
+
+    private Integer coachId;
+
+    private Double cost;
 }

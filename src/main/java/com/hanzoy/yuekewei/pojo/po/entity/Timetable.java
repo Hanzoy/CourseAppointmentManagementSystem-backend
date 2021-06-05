@@ -46,4 +46,10 @@ public class Timetable {
      * 地址
      */
     private String address;
+
+    /**
+     *
+     */
+    private Double cost;
+
 }

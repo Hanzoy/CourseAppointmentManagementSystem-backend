@@ -1,5 +1,6 @@
 package com.hanzoy.yuekewei.exception;
 
+import com.hanzoy.yuekewei.exception.myExceptions.ParamErrorException;
 import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.exception.myExceptions.WechatServerErrorException;
 import com.hanzoy.yuekewei.pojo.dto.CommonResult;
@@ -54,6 +55,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WechatServerErrorException.class)
     public CommonResult<Object> handleWechatServerErrorException(WechatServerErrorException e){
         return CommonResult.fail(ResultEnum.WECHAT_SERVER_ERROR.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(ParamErrorException.class)
+    public CommonResult<Object> handleParamErrorException(ParamErrorException e){
+        return CommonResult.fail(ResultEnum.PARAM_ERROR.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(TokenErrorException.class)

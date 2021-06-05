@@ -53,4 +53,6 @@ public class Timetable {
      * 是否预约
      */
     private Boolean isReservation;
+
+    private Double cost;
 }

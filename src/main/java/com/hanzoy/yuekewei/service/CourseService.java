@@ -41,4 +41,24 @@ public interface CourseService {
     HasReservationCourseResult hasReservationCourse(HasReservationCourseParam param);
 
     GetCourseResult getCourse(GetCourseParam param);
+
+    AddCourseResult addCourse(AddCourseParam param);
+
+    EditCourseResult editCourse(EditCourseParam param);
+
+    DeleteCourseResult deleteCourse(DeleteCourseParam param);
+
+    GetTimetableByYearAndMonthResult getTimetableByYearAndMonth(GetTimetableByYearAndMonthParam param);
+
+    GetTimetableByDateAndCourseIdResult getTimetableByDateAndCourseId(GetTimetableByDateAndCourseIdParam param);
+
+    AddTimetableResult addTimetable(AddTimetableParam param);
+
+    DeleteTimetableResult deleteTimetable(DeleteTimetableParam param);
+
+    EditTimetableResult editTimetable(EditTimetableParam param);
+
+    AutoCreateResult autoCreate(AutoCreateParam param);
+
+    Auto30CreateResult auto30Create(Auto30CreateParam param);
 }

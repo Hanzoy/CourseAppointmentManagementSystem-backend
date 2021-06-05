@@ -1,7 +1,9 @@
 package com.hanzoy.yuekewei.service.impl;
 
+import com.hanzoy.utils.ClassCopyUtils.ClassCopyUtils;
 import com.hanzoy.utils.JWTUtils.JWTUtils;
 import com.hanzoy.utils.MD5Utils.MD5Utils;
+import com.hanzoy.yuekewei.exception.myExceptions.ParamErrorException;
 import com.hanzoy.yuekewei.exception.myExceptions.TokenErrorException;
 import com.hanzoy.yuekewei.mapper.CourseMapper;
 import com.hanzoy.yuekewei.mapper.ManageMapper;
@@ -10,9 +12,11 @@ import com.hanzoy.yuekewei.pojo.bo.AdminTokenInfo;
 import com.hanzoy.yuekewei.pojo.dto.param.*;
 import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.CourseAndUserInfo;
+import com.hanzoy.yuekewei.pojo.po.TimetableExampleInfo;
 import com.hanzoy.yuekewei.pojo.po.UserCourseTimeInfo;
 import com.hanzoy.yuekewei.pojo.po.UserInfo;
 import com.hanzoy.yuekewei.pojo.po.entity.Admin;
+import com.hanzoy.yuekewei.pojo.po.entity.TimetableExample;
 import com.hanzoy.yuekewei.pojo.po.entity.Users;
 import com.hanzoy.yuekewei.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,5 +166,74 @@ public class ManageServiceImpl implements ManageService {
 
         result.setUserInfo(userInfo);
         return result;
+    }
+
+    @Override
+    public GetEXTimetableResult getEXTimetable(GetEXTimetableParam param) {
+
+        GetEXTimetableResult result = new GetEXTimetableResult();
+
+        ArrayList<TimetableExampleInfo> timetableByWeekAndCourseId = manageMapper.getEXTimetableByWeekAndCourseId(param.getWeek(), param.getCourseId());
+
+        result.setTimetableExampleInfos(timetableByWeekAndCourseId);
+
+        return result;
+    }
+
+    @Override
+    public AddEXTimetableResult addEXTimetable(AddEXTimetableParam param) {
+
+        AddEXTimetableResult result = new AddEXTimetableResult();
+
+        TimetableExample timetableExample = new TimetableExample();
+        ClassCopyUtils.ClassCopy(timetableExample, param);
+        System.out.println(timetableExample);
+        manageMapper.insertEXTimetable(timetableExample);
+
+        result.setId(timetableExample.getId());
+        return result;
+    }
+
+    @Override
+    public DeleteEXTimetableResult deleteEXTimetable(DeleteEXTimetableParam param) {
+        manageMapper.deleteEXTimetable(param.getId());
+        return null;
+    }
+
+    @Override
+    public EditEXTimetableResult editEXTimetable(EditEXTimetableParam param) {
+        if(param.getStartTime().compareTo(param.getEndTime())>0){
+            throw new ParamErrorException("开始时间不应该大于结束时间");
+        }
+        manageMapper.editEXTimetable(
+                param.getId(),
+                param.getCourseId(),
+                param.getAddress(),
+                param.getEndTime(),
+                param.getStartTime(),
+                param.getRemark(),
+                param.getWeek(),
+                param.getToplimit(),
+                param.getCoachId(),
+                param.getCost());
+        return null;
+    }
+
+    @Override
+    public ChangePasswordResult changePassword(ChangePasswordParam param) {
+
+        AdminTokenInfo adminTokenInfo = getAdminTokenInfo(param.getToken());
+
+        Integer id = adminTokenInfo.getId();
+
+        //验证密码
+        Admin admin = manageMapper.getAdminByUsernameAndPassword(adminTokenInfo.getUsername(), MD5Utils.MD5(param.getOldPassword()));
+        if(admin == null){
+            throw new TokenErrorException("账号密码错误");
+        }
+
+        manageMapper.changePassword(id, MD5Utils.MD5(param.getNewPassword()));
+
+        return null;
     }
 }

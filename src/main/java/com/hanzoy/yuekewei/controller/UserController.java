@@ -55,4 +55,18 @@ public class UserController {
         GetUserInfoResult result = userService.getUserInfo(param);
         return CommonResult.success(result);
     }
+
+    @ApiOperation("修改课时")
+    @PostMapping("/updateCourseTime")
+    public CommonResult<UpdateCourseTimeResult> updateCourseTime(@RequestBody @Validated UpdateCourseTimeParam param){
+        UpdateCourseTimeResult result = userService.updateCourseTime(param);
+        return CommonResult.success(result);
+    }
+
+    @ApiOperation("创建课时")
+    @PostMapping("/addCourseTime")
+    public CommonResult<AddCourseTimeResult> updateCourseTime(@RequestBody @Validated AddCourseTimeParam param){
+        AddCourseTimeResult result = userService.addCourseTime(param);
+        return CommonResult.success(result);
+    }
 }

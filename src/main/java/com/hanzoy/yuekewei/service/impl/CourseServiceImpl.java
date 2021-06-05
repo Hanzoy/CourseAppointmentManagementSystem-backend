@@ -1,7 +1,9 @@
 package com.hanzoy.yuekewei.service.impl;
 
 import com.hanzoy.utils.ClassCopyUtils.ClassCopyUtils;
+import com.hanzoy.yuekewei.exception.myExceptions.ParamErrorException;
 import com.hanzoy.yuekewei.mapper.CourseMapper;
+import com.hanzoy.yuekewei.mapper.ManageMapper;
 import com.hanzoy.yuekewei.pojo.bo.CourseTimetable;
 import com.hanzoy.yuekewei.pojo.bo.UserTokenInfo;
 import com.hanzoy.yuekewei.pojo.dto.param.*;
@@ -9,12 +11,17 @@ import com.hanzoy.yuekewei.pojo.dto.result.*;
 import com.hanzoy.yuekewei.pojo.po.*;
 import com.hanzoy.yuekewei.pojo.po.entity.Course;
 import com.hanzoy.yuekewei.service.CourseService;
+import com.hanzoy.yuekewei.service.ManageService;
 import com.hanzoy.yuekewei.service.UserService;
+import com.hanzoy.yuekewei.utils.request.dto.Param;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +37,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Resource
     CourseMapper courseMapper;
+
+    @Resource
+    ManageMapper manageMapper;
 
     @Override
     public GetMyCourseInfoResult getMyCourseInfo(GetMyCourseInfoParam param) {
@@ -169,17 +179,18 @@ public class CourseServiceImpl implements CourseService {
                 }
 
                 //查询用户是否拥有足够的课时
-                Integer courseTime = courseMapper.getCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId());
-                if(courseTime<=0){
+                Double courseTime = courseMapper.getCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId());
+
+                if(courseTime-timetableInfo.getCost() < 0){
                     result.setResult(false);
                     result.setMessage("您的课程课时不足，无法预约该课程");
                     return result;
                 }
 
                 //将课时数量减1
-                courseMapper.updateCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId(), courseTime-1);
+                courseMapper.updateCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId(), courseTime-timetableInfo.getCost());
                 //记录当前预约操作
-                courseMapper.recordOperation(tokenInfo.getOpenid(), timetableId, -1);
+                courseMapper.recordOperation(tokenInfo.getOpenid(), timetableId, -timetableInfo.getCost());
                 //将用户添加至该课程成员中
                 courseMapper.addUserToTimetable(tokenInfo.getOpenid(), timetableId);
 
@@ -215,12 +226,12 @@ public class CourseServiceImpl implements CourseService {
                 }
 
                 //查询用户拥有的课时
-                Integer courseTime = courseMapper.getCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId());
+                Double courseTime = courseMapper.getCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId());
 
                 //将课时数量+1
-                courseMapper.updateCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId(), courseTime+1);
+                courseMapper.updateCourseTime(tokenInfo.getOpenid(), timetableInfo.getCourseId(), courseTime+timetableInfo.getCost());
                 //记录当前预约操作
-                courseMapper.recordOperation(tokenInfo.getOpenid(), timetableId, 1);
+                courseMapper.recordOperation(tokenInfo.getOpenid(), timetableId, timetableInfo.getCost());
                 //将用户从该课程成员中删除
                 courseMapper.deleteUserToTimetable(tokenInfo.getOpenid(), timetableId);
 
@@ -253,9 +264,195 @@ public class CourseServiceImpl implements CourseService {
     public GetCourseResult getCourse(GetCourseParam param) {
         GetCourseResult result = new GetCourseResult();
 
-        ArrayList<Course> course = courseMapper.getCourse();
+        ArrayList<CourseInfo> course = courseMapper.getCourse();
 
         result.setCourse(course);
         return result;
+    }
+
+    @Override
+    public AddCourseResult addCourse(AddCourseParam param) {
+        AddCourseResult result = new AddCourseResult();
+
+        Course course = new Course();
+        course.setName(param.getName());
+
+        courseMapper.insertCourse(course);
+
+        result.setId(course.getId());
+        return result;
+    }
+
+    @Override
+    public EditCourseResult editCourse(EditCourseParam param) {
+        courseMapper.editCourse(param.getId(), param.getName(), param.getMoney());
+        return null;
+    }
+
+    @Override
+    public DeleteCourseResult deleteCourse(DeleteCourseParam param) {
+        courseMapper.deleteCourse(param.getId());
+        return null;
+    }
+
+    @Override
+    public GetTimetableByYearAndMonthResult getTimetableByYearAndMonth(GetTimetableByYearAndMonthParam param) {
+        GetTimetableByYearAndMonthResult result = new GetTimetableByYearAndMonthResult();
+        ArrayList<TimetableInfo> timetableByYearAndMonth = courseMapper.getTimetableByYearAndMonth(param.getYear(), param.getMonth());
+
+        result.setTimetableInfos(timetableByYearAndMonth);
+
+        return result;
+    }
+
+    @Override
+    public GetTimetableByDateAndCourseIdResult getTimetableByDateAndCourseId(GetTimetableByDateAndCourseIdParam param) {
+        GetTimetableByDateAndCourseIdResult result = new GetTimetableByDateAndCourseIdResult();
+        ArrayList<TimetableInfos> timetableByDateAndCourseId = courseMapper.getTimetableByDateAndCourseId(param.getDate(), param.getCourseId());
+        result.setTimetableInfos(timetableByDateAndCourseId);
+        return result;
+    }
+
+    @Override
+    public AddTimetableResult addTimetable(AddTimetableParam param) {
+        AddTimetableResult result = new AddTimetableResult();
+        courseMapper.addTimetable(param);
+//        courseMapper.searchCoachByTimetableId(param.getId());
+        result.setId(param.getId());
+        return result;
+    }
+
+    @Override
+    public DeleteTimetableResult deleteTimetable(DeleteTimetableParam param) {
+//        DeleteTimetableResult result = new DeleteTimetableResult();
+        courseMapper.deleteTimetable(param.getId());
+        return null;
+    }
+
+    @Override
+    public EditTimetableResult editTimetable(EditTimetableParam param) {
+        if(param.getStartTime().compareTo(param.getEndTime())>0){
+            throw new ParamErrorException("开始时间不应该大于结束时间");
+        }
+        courseMapper.editTimetable(param);
+        Boolean has = courseMapper.searchCoachByTimetableId(param.getTimetableId());
+        if(has){
+            courseMapper.updateCoach(param.getTimetableId(), param.getCoachId());
+        }else{
+            courseMapper.insertCoach(param.getTimetableId(), param.getCoachId());
+        }
+        return null;
+    }
+
+    @Override
+    public AutoCreateResult autoCreate(AutoCreateParam param) {
+        return  _autoCreate(param);
+    }
+
+    @Override
+    public Auto30CreateResult auto30Create(Auto30CreateParam param) {
+        Date date=new Date(); //取时间
+        Calendar calendar = new GregorianCalendar();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i=0; i<29; i++){
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
+            date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+            String d = format.format(date);
+            AutoCreateParam par = new AutoCreateParam();
+            par.setDate(d);
+            if(param.getFlag().equals("0")){
+                courseMapper.deleteTimetableByDate(d);
+            }
+            System.out.println("par");
+            System.out.println(par);
+            _autoCreate(par);
+        }
+        return null;
+    }
+
+    @Scheduled(cron = "0 0 0 1/1 * ? ")//每天执行一次
+    public void UpdateForEveryDay(){
+        Date date=new Date(); //取时间
+        Calendar calendar = new GregorianCalendar();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,30); //把日期往后增加一天,整数  往后推,负数往前移动
+        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+        String d = format.format(date);
+        AutoCreateParam par = new AutoCreateParam();
+        par.setDate(d);
+        _autoCreate(par);
+    }
+
+    private AutoCreateResult _autoCreate(AutoCreateParam param) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(param.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Integer week = getWeekNumberOfDate(date);
+
+        System.out.println("week");
+        System.out.println(week);
+
+        ArrayList<TimetableExampleInfo> exTimetableByWeeks = manageMapper.getEXTimetableByWeek(week);
+        System.out.println(exTimetableByWeeks);
+        for (TimetableExampleInfo exTimetableByWeek : exTimetableByWeeks) {
+            AddTimetableParam params = new AddTimetableParam();
+            ClassCopyUtils.ClassCopy(params, exTimetableByWeek);
+            ClassCopyUtils.ClassCopy(params, param);
+            System.out.println(params);
+            courseMapper.addTimetable(params);
+
+            System.out.println("params");
+            System.out.println(params);
+
+            EditTimetableParam params2 = new EditTimetableParam();
+            ClassCopyUtils.ClassCopy(params2, exTimetableByWeek);
+            ClassCopyUtils.ClassCopy(params2, param);
+            System.out.println("exTimetableByWeek");
+            System.out.println(exTimetableByWeek);
+
+            System.out.println("param");
+            System.out.println(param);
+
+            params2.setTimetableId(params.getId());
+
+            System.out.println("params2");
+            System.out.println(params2);
+
+            Boolean has = courseMapper.searchCoachByTimetableId(params2.getTimetableId());
+            if(has){
+                courseMapper.updateCoach(params2.getTimetableId(), params2.getCoachId());
+            }else{
+                System.out.println(params2.getTimetableId()+" "+params2.getCoachId());
+                courseMapper.insertCoach(params2.getTimetableId(), params2.getCoachId());
+            }
+        }
+
+
+        return null;
+    }
+
+    public static String getWeekOfDate(Date dt) {
+        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        return weekDays[w];
+    }
+
+    public static int getWeekNumberOfDate(Date dt) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        return w==0?7:w;
     }
 }

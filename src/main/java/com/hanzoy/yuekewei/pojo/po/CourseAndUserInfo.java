@@ -21,6 +21,7 @@ public class CourseAndUserInfo {
      */
     private String backgroundUrl;
 
+    private Double money;
     /**
      * 每个课程的用户信息
      */
