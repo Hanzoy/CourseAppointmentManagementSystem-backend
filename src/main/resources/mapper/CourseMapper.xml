@@ -317,7 +317,11 @@
             on tum.timetable_id = t.id
         where
             t.date like CONCAT(#{year},'-','%',#{month},'%')
-            order by t.start_time ;
+        or
+            t.date like CONCAT(#{lastYear},'-','%',#{lastMonth},'%')
+        or
+            t.date like CONCAT(#{nextYear},'-','%',#{nextMonth},'%')
+            order by t.date, t.start_time ;
     </select>
 
     <select id="getTimetableByDateAndCourseId" resultType="com.hanzoy.yuekewei.pojo.po.TimetableInfos">

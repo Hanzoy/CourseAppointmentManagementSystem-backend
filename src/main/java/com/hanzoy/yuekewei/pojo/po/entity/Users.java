@@ -36,4 +36,6 @@ public class Users {
      * 创建时间
      */
     private String time;
+
+    private String remark;
 }

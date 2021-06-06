@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
         UserTokenInfo userTokenInfo = getUserTokenInfo(param.getToken());
 
-        usersMapper.updateInformation(userTokenInfo.getOpenid(), param.getName(), param.getPhone());
+        usersMapper.updateInformationWithoutRemark(userTokenInfo.getOpenid(), param.getName(), param.getPhone());
         return null;
     }
 

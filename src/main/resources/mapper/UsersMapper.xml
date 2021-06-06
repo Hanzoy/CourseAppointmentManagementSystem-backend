@@ -22,8 +22,13 @@
     </select>
 
     <update id="updateInformation">
+        update users set name = #{name}, phone = #{phone}, remark = #{remark} where openid = #{openid};
+    </update>
+
+    <update id="updateInformationWithoutRemark">
         update users set name = #{name}, phone = #{phone} where openid = #{openid};
     </update>
+
     <select id="getAllUsersByKey" resultType="com.hanzoy.yuekewei.pojo.po.entity.Users">
         select
                openid, name, nick_name AS nickName, avatar_url AS avatarUrl, phone
@@ -38,7 +43,7 @@
     </select>
     
     <select id="getUserInfo" resultType="com.hanzoy.yuekewei.pojo.po.UserInfo">
-        select name, nick_name AS nickName, phone, avatar_url AS avatarUrl from users where openid = #{openid}
+        select name, nick_name AS nickName, phone, remark, avatar_url AS avatarUrl from users where openid = #{openid}
     </select>
 
     <update id="updateCourseTime">

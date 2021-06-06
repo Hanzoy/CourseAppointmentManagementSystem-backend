@@ -13,7 +13,9 @@ public interface UsersMapper {
 
     ArrayList<Users> getAllUsers();
 
-    void updateInformation(@Param("openid") String openid, @Param("name") String name, @Param("phone") String phone);
+    void updateInformation(@Param("openid") String openid, @Param("name") String name, @Param("phone") String phone, @Param("remark") String remark);
+
+    void updateInformationWithoutRemark(@Param("openid") String openid, @Param("name") String name, @Param("phone") String phone);
 
     ArrayList<Users> getAllUsersByKey(@Param("key") String key);
 

@@ -298,7 +298,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public GetTimetableByYearAndMonthResult getTimetableByYearAndMonth(GetTimetableByYearAndMonthParam param) {
         GetTimetableByYearAndMonthResult result = new GetTimetableByYearAndMonthResult();
-        ArrayList<TimetableInfo> timetableByYearAndMonth = courseMapper.getTimetableByYearAndMonth(param.getYear(), param.getMonth());
+        String lastYear = String.valueOf(new Integer(param.getYear())-(param.getMonth().equals("1")?1:0));
+        String nextYear = String.valueOf(new Integer(param.getYear())+(param.getMonth().equals("12")?1:0));
+        String lastMonth = String.valueOf((param.getMonth().equals("1")?12:new Integer(param.getMonth())-1));
+        String nextMonth = String.valueOf((param.getMonth().equals("12")?1:new Integer(param.getMonth())+1));
+        System.out.println(lastYear+" "+lastMonth);
+        System.out.println(nextYear+" "+nextMonth);
+
+        ArrayList<TimetableInfo> timetableByYearAndMonth = courseMapper.getTimetableByYearAndMonth(param.getYear(), param.getMonth(), lastYear, lastMonth, nextYear, nextMonth);
 
         result.setTimetableInfos(timetableByYearAndMonth);
 

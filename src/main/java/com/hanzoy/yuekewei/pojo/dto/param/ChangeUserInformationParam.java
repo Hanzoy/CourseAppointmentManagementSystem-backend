@@ -13,9 +13,9 @@ public class ChangeUserInformationParam {
     @NotEmpty(message = "不能为空")
     private String openid;
 
-    @NotEmpty(message = "不能为空")
     private String name;
 
-    @NotEmpty(message = "不能为空")
     private String phone;
+
+    private String remark;
 }

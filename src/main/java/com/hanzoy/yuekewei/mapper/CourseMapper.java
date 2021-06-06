@@ -52,7 +52,7 @@ public interface CourseMapper {
 
     void changePicture(@Param("pictureId") Integer pictureId, @Param("id") Integer id );
 
-    ArrayList<TimetableInfo> getTimetableByYearAndMonth(@Param("year") String year, @Param("month") String month);
+    ArrayList<TimetableInfo> getTimetableByYearAndMonth(@Param("year") String year, @Param("month") String month, @Param("lastYear") String lastYear, @Param("lastMonth") String lastMonth, @Param("nextYear") String nextYear, @Param("nextMonth") String nextMonth);
 
     ArrayList<TimetableInfos> getTimetableByDateAndCourseId(@Param("date") String date, @Param("courseId") Integer courseId);
 

@@ -123,7 +123,7 @@ public class ManageServiceImpl implements ManageService {
             throw new TokenErrorException("未识别token");
         }
 
-        usersMapper.updateInformation(param.getOpenid(), param.getName(), param.getPhone());
+        usersMapper.updateInformation(param.getOpenid(), param.getName(), param.getPhone(), param.getRemark());
 
         return null;
     }
