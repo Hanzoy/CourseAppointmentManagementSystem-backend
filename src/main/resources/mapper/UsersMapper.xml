@@ -18,7 +18,7 @@
     </insert>
 
     <select id="getAllUsers" resultType="com.hanzoy.yuekewei.pojo.po.entity.Users">
-        select openid, name, nick_name AS nickName, avatar_url AS avatarUrl, phone from users
+        select openid, name, nick_name AS nickName, avatar_url AS avatarUrl, phone, remark from users
     </select>
 
     <update id="updateInformation">
@@ -53,4 +53,8 @@
     <insert id="addCourseTime">
         insert into course_time(user_id, course_id, count) VALUES (#{openid}, #{courseId}, #{count});
     </insert>
+
+    <delete id="deleteCourseTime">
+        delete from course_time where user_id = #{openid} and course_id = #{courseId}
+    </delete>
 </mapper>

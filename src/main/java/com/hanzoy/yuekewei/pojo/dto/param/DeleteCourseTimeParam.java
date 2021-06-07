@@ -6,9 +6,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class GetAllUsersByKeyParam {
+public class DeleteCourseTimeParam {
     @NotEmpty(message = "不能为空")
     private String token;
+    @NotEmpty(message = "不能为空")
+    private String openid;
     @NotNull(message = "不能为空")
-    private String key;
+    private Integer courseId;
 }

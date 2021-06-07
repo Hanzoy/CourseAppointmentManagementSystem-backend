@@ -69,4 +69,11 @@ public class UserController {
         AddCourseTimeResult result = userService.addCourseTime(param);
         return CommonResult.success(result);
     }
+
+    @ApiOperation("删除课时")
+    @PostMapping("/deleteCourseTime")
+    public CommonResult<DeleteCourseTimeResult> deleteCourseTime(@RequestBody @Validated DeleteCourseTimeParam param){
+        DeleteCourseTimeResult result = userService.deleteCourseTime(param);
+        return CommonResult.success(result);
+    }
 }

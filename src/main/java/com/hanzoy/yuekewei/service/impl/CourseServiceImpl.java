@@ -361,7 +361,7 @@ public class CourseServiceImpl implements CourseService {
         Date date=new Date(); //取时间
         Calendar calendar = new GregorianCalendar();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        for(int i=0; i<29; i++){
+        for(int i=0; i<30; i++){
             calendar.setTime(date);
             calendar.add(Calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
             date=calendar.getTime(); //这个时间就是日期往后推一天的结果

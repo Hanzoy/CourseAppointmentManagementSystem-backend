@@ -54,4 +54,6 @@ public interface UserService {
     UpdateCourseTimeResult updateCourseTime(UpdateCourseTimeParam param);
 
     AddCourseTimeResult addCourseTime(AddCourseTimeParam param);
+
+    DeleteCourseTimeResult deleteCourseTime(DeleteCourseTimeParam param);
 }

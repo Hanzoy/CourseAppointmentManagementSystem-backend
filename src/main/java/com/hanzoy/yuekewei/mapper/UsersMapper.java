@@ -24,4 +24,6 @@ public interface UsersMapper {
     void updateCourseTime(@Param("openid")String openid, @Param("courseId") Integer courseId, @Param("count") Double count);
 
     void addCourseTime(@Param("openid")String openid, @Param("courseId") Integer courseId, @Param("count") Double count);
+
+    void deleteCourseTime(@Param("openid")String openid, @Param("courseId") Integer courseId);
 }

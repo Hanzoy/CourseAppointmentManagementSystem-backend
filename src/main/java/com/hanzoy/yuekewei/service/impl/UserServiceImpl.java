@@ -168,4 +168,10 @@ public class UserServiceImpl implements UserService {
 
         return null;
     }
+
+    @Override
+    public DeleteCourseTimeResult deleteCourseTime(DeleteCourseTimeParam param) {
+        usersMapper.deleteCourseTime(param.getOpenid(), param.getCourseId());
+        return null;
+    }
 }
